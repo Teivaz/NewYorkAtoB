@@ -12,7 +12,7 @@ MAX_LOD = 3
 
 # convertor config
 TILE_SIZE = (512, 512)
-DEST_FOLDER = "1/"
+DEST_FOLDER = "../resources/map/"
 CONFIG_NAME = "map.json"
 
 def nameForTile(left, top, lod):
