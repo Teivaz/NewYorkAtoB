@@ -1,4 +1,4 @@
-#include "HelloWorldScene.h"
+#include "MainScene.h"
 
 USING_NS_CC;
 
@@ -55,7 +55,7 @@ bool HelloWorld::init()
     // create and initialize a label
     
     auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 24);
-    
+    /*
     // position the label on the center of the screen
     label->setPosition(Vec2(origin.x + visibleSize.width/2,
                             origin.y + visibleSize.height - label->getContentSize().height));
@@ -71,7 +71,7 @@ bool HelloWorld::init()
 
     // add the sprite as a child to this layer
     this->addChild(sprite, 0);
-    
+    */
     return true;
 }
 
