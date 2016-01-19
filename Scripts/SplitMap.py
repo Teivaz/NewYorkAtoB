@@ -44,11 +44,11 @@ def TileImage(image, mapCoordinates, lod, config):
 			subimageName = nameForTile(regionIndexX, regionIndexY, lod)
 			configItem = {
 				"lod": lod,
-				"x1": regionIndexX*lodMultiplier,
-				"y1": regionIndexY*lodMultiplier,
-				"x2": (regionSize[2]+mapOffsetX)*lodMultiplier,
-				"y2": (regionSize[3]+mapOffsetY)*lodMultiplier,
-				"name": subimageName}
+				"bounds": [	regionIndexX*lodMultiplier,
+							regionIndexY*lodMultiplier,
+							(regionSize[2]+mapOffsetX)*lodMultiplier,
+							(regionSize[3]+mapOffsetY)*lodMultiplier],
+				"name": DEST_FOLDER + subimageName}
 			config.append(configItem)
 			subimage.save(DEST_FOLDER + subimageName)
 			regionSize[0] += TILE_SIZE[0]
@@ -70,11 +70,21 @@ def convert(mapFileName, mapCoordinates, maxLod):
 	fp.close()
 	im = p.close()
 	
-	config = {}
+	lodConfig = []
 	for lod in range(0, maxLod):
-		lodConfig = []
 		TileImage(im, mapCoordinates, lod, lodConfig)
-		config[lod] = lodConfig
+
+	config = {
+		"map":
+		{
+			"name": mapFileName,
+			"bounds": [mapCoordinates],
+			"maxLod": maxLod,
+			"tileWidth": TILE_SIZE[0],
+			"tileHeight": TILE_SIZE[1]
+		},
+		"tiles": lodConfig
+	}
 
 	cf = open(DEST_FOLDER+CONFIG_NAME, "w")
 	cf.write(json.dumps(config, indent=4, sort_keys=True))

@@ -11,6 +11,12 @@
 		0BA3921B1C4C2F7700210CA3 /* MainScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BA392181C4C2F7700210CA3 /* MainScene.cpp */; };
 		0BA3921D1C4C37E900210CA3 /* map in Resources */ = {isa = PBXBuildFile; fileRef = 0BA3921C1C4C37E900210CA3 /* map */; };
 		0BA3921E1C4C37E900210CA3 /* map in Resources */ = {isa = PBXBuildFile; fileRef = 0BA3921C1C4C37E900210CA3 /* map */; };
+		0BA392211C4C3CD500210CA3 /* MapTile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BA3921F1C4C3CD500210CA3 /* MapTile.cpp */; };
+		0BA392221C4C3CD500210CA3 /* MapTile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BA3921F1C4C3CD500210CA3 /* MapTile.cpp */; };
+		0BA392261C4EB11E00210CA3 /* MapLodLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BA392241C4EB11E00210CA3 /* MapLodLevel.cpp */; };
+		0BA392271C4EB11E00210CA3 /* MapLodLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BA392241C4EB11E00210CA3 /* MapLodLevel.cpp */; };
+		0BA3922A1C4EC2C500210CA3 /* MapLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BA392281C4EC2C500210CA3 /* MapLoader.cpp */; };
+		0BA3922B1C4EC2C500210CA3 /* MapLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BA392281C4EC2C500210CA3 /* MapLoader.cpp */; };
 		1AC6FB21180E996B004C840B /* libcocos2d Mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC6FAF9180E9839004C840B /* libcocos2d Mac.a */; };
 		1AC6FB30180E99EB004C840B /* libcocos2d iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC6FB07180E9839004C840B /* libcocos2d iOS.a */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -98,6 +104,13 @@
 		0BA392181C4C2F7700210CA3 /* MainScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainScene.cpp; sourceTree = "<group>"; };
 		0BA392191C4C2F7700210CA3 /* MainScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainScene.h; sourceTree = "<group>"; };
 		0BA3921C1C4C37E900210CA3 /* map */ = {isa = PBXFileReference; lastKnownFileType = folder; path = map; sourceTree = "<group>"; };
+		0BA3921F1C4C3CD500210CA3 /* MapTile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapTile.cpp; sourceTree = "<group>"; };
+		0BA392201C4C3CD500210CA3 /* MapTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapTile.h; sourceTree = "<group>"; };
+		0BA392241C4EB11E00210CA3 /* MapLodLevel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapLodLevel.cpp; sourceTree = "<group>"; };
+		0BA392251C4EB11E00210CA3 /* MapLodLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapLodLevel.h; sourceTree = "<group>"; };
+		0BA392281C4EC2C500210CA3 /* MapLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapLoader.cpp; sourceTree = "<group>"; };
+		0BA392291C4EC2C500210CA3 /* MapLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapLoader.h; sourceTree = "<group>"; };
+		0BA3922C1C4EE4C500210CA3 /* MapContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapContext.h; sourceTree = "<group>"; };
 		1AC6FAE5180E9839004C840B /* cocos2d_libs.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = cocos2d_libs.xcodeproj; path = ../cocos2d/build/cocos2d_libs.xcodeproj; sourceTree = "<group>"; };
 		1ACB3243164770DE00914215 /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../../cocos2dx/platform/third_party/ios/libraries/libcurl.a; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -285,6 +298,13 @@
 				0BA392191C4C2F7700210CA3 /* MainScene.h */,
 				46880B8419C43A87006E1F66 /* AppDelegate.cpp */,
 				46880B8519C43A87006E1F66 /* AppDelegate.h */,
+				0BA3921F1C4C3CD500210CA3 /* MapTile.cpp */,
+				0BA392201C4C3CD500210CA3 /* MapTile.h */,
+				0BA392241C4EB11E00210CA3 /* MapLodLevel.cpp */,
+				0BA392251C4EB11E00210CA3 /* MapLodLevel.h */,
+				0BA392281C4EC2C500210CA3 /* MapLoader.cpp */,
+				0BA392291C4EC2C500210CA3 /* MapLoader.h */,
+				0BA3922C1C4EE4C500210CA3 /* MapContext.h */,
 			);
 			name = Classes;
 			path = ../Classes;
@@ -470,10 +490,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0BA392211C4C3CD500210CA3 /* MapTile.cpp in Sources */,
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				0BA3921A1C4C2F7700210CA3 /* MainScene.cpp in Sources */,
+				0BA3922A1C4EC2C500210CA3 /* MapLoader.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
+				0BA392261C4EB11E00210CA3 /* MapLodLevel.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -482,6 +505,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0BA392271C4EB11E00210CA3 /* MapLodLevel.cpp in Sources */,
+				0BA3922B1C4EC2C500210CA3 /* MapLoader.cpp in Sources */,
+				0BA392221C4C3CD500210CA3 /* MapTile.cpp in Sources */,
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
 				0BA3921B1C4C2F7700210CA3 /* MainScene.cpp in Sources */,
