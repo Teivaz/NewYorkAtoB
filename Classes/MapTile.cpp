@@ -12,24 +12,24 @@ MapTile::MapTile()
 {
 }
 
-bool MapTile::init(const cocos2d::Rect& coordinateRect, cocos2d::Sprite* mapFragment)
+bool MapTile::init(const CoordinateRegion& region, cocos2d::Sprite* mapFragment)
 {
     addChild(mapFragment);
     setContentSize(mapFragment->getContentSize());
     return true;
 }
 
-MapTile* MapTile::create(const cocos2d::Rect& coordinateRect, cocos2d::Sprite* mapFragment)
+MapTile* MapTile::create(const CoordinateRegion& region, cocos2d::Sprite* mapFragment)
 {
     MapTile* tile = new MapTile();
     tile->autorelease();
-    if(tile->init(coordinateRect, mapFragment))
+    if(tile->init(region, mapFragment))
         return tile;
     return nullptr;
 }
 
-MapTile* MapTile::getOrCreate(const cocos2d::Rect& coordinateRect, const std::string& name)
+MapTile* MapTile::getOrCreate(const MapTileInfo& tileInfo)
 {
-    auto sprite = cocos2d::Sprite::create(name);
-    return create(coordinateRect, sprite);
+    auto sprite = cocos2d::Sprite::create(tileInfo.name);
+    return create(tileInfo.region, sprite);
 }

@@ -8,12 +8,13 @@
 
 #pragma once
 #include "cocos2d.h"
+#include "MapTileInfo.h"
 
 class MapTile : public cocos2d::Node{
 private:
     MapTile();
-    bool init(const cocos2d::Rect& coordinateRect, cocos2d::Sprite* mapFragment);
+    bool init(const CoordinateRegion& region, cocos2d::Sprite* mapFragment);
 public:
-    static MapTile* create(const cocos2d::Rect& coordinateRect, cocos2d::Sprite* mapFragment);
-    static MapTile* getOrCreate(const cocos2d::Rect& coordinateRect, const std::string& name);
+    static MapTile* create(const CoordinateRegion& region, cocos2d::Sprite* mapFragment);
+    static MapTile* getOrCreate(const MapTileInfo& tileInfo);
 };

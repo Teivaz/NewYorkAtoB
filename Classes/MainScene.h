@@ -5,7 +5,7 @@
 
 class MapLoader;
 
-class MapLayer : public cocos2d::Layer
+class MapViewLayer : public cocos2d::Layer
 {
 public:
     static cocos2d::Scene* createScene();
@@ -16,13 +16,13 @@ public:
     void menuCloseCallback(cocos2d::Ref* pSender);
     
     // implement the "static create()" method manually
-    CREATE_FUNC(MapLayer);
+    CREATE_FUNC(MapViewLayer);
     
     static MapContext Context;
     
     
-    MapLayer();
-    virtual ~MapLayer();
+    MapViewLayer();
+    virtual ~MapViewLayer();
     
 private:
     MapLoader* m_loader;

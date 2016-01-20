@@ -8,6 +8,8 @@
 
 #pragma once
 #include "cocos2d.h"
+#include "MapTileInfo.h"
+#include "Coordinates.h"
 
 class MapTile;
 
@@ -17,23 +19,23 @@ public:
     
     bool LoadMapConfig(const std::string& mapConfigPath);
     
-    MapTile* getMapTileForCoordinates(const cocos2d::Vec2& coordinate, int lodLevel);
+    MapTile* getMapTile(const Coordinate& point, int lod);
 
 private:
     
-    struct MapTileInfo{
-        int lod;
-        int x1, y1, x2, y2;
-        std::string name;
-    };
+    // Requires existing lod
+    const MapTileInfo& getMapTileInfo(const Coordinate& point, int lod);
     
-    std::string calculateTileName(int x, int y, int l);
-    std::string calculateTileName(const MapLoader::MapTileInfo& tileInfo);
-    std::string calculateTileName(const cocos2d::Vec2& point, int lod);
     int getNearesLod(int lod);
     
-    std::map<std::string, MapTileInfo> m_tileInfoMap;
+    
+    typedef std::list<MapTileInfo> TileInfos;
+    typedef std::vector<TileInfos> TileInfoLod;
+    
+    TileInfoLod m_tileLods;
     int m_maxLod;
     int m_tileWidth;
     int m_tileHeight;
+    
+    MapTileInfo m_defaultTile;
 };

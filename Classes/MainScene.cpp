@@ -5,28 +5,28 @@
 
 USING_NS_CC;
 
-MapContext MapLayer::Context;
+MapContext MapViewLayer::Context;
 
-MapLayer::MapLayer()
+MapViewLayer::MapViewLayer()
 : m_loader(nullptr)
 {
     
 }
 
-MapLayer::~MapLayer(){
+MapViewLayer::~MapViewLayer(){
     if(Context.Loader == m_loader){
         Context.Loader = nullptr; // remove pointer to my loader
     }
     delete m_loader;
 }
 
-Scene* MapLayer::createScene()
+Scene* MapViewLayer::createScene()
 {
     // 'scene' is an autorelease object
     auto scene = Scene::create();
     
     // 'layer' is an autorelease object
-    auto layer = MapLayer::create();
+    auto layer = MapViewLayer::create();
 
     // add layer as a child to scene
     scene->addChild(layer);
@@ -36,7 +36,7 @@ Scene* MapLayer::createScene()
 }
 
 // on "init" you need to initialize your instance
-bool MapLayer::init()
+bool MapViewLayer::init()
 {
     //////////////////////////////
     // 1. super init first
@@ -60,7 +60,7 @@ bool MapLayer::init()
     auto closeItem = MenuItemImage::create(
                                            "CloseNormal.png",
                                            "CloseSelected.png",
-                                           CC_CALLBACK_1(MapLayer::menuCloseCallback, this));
+                                           CC_CALLBACK_1(MapViewLayer::menuCloseCallback, this));
     
 	closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width/2 ,
                                 origin.y + closeItem->getContentSize().height/2));
@@ -71,14 +71,14 @@ bool MapLayer::init()
     this->addChild(menu, 1);
 
     
-    auto t = Context.Loader->getMapTileForCoordinates( {10, 10}, 0);
+    auto t = Context.Loader->getMapTile({10, 10}, 0);
     this->addChild(t, 2);
     
     return true;
 }
 
 
-void MapLayer::menuCloseCallback(Ref* pSender)
+void MapViewLayer::menuCloseCallback(Ref* pSender)
 {
     Director::getInstance()->end();
 
