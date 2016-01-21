@@ -20,11 +20,13 @@ public:
     bool LoadMapConfig(const std::string& mapConfigPath);
     
     MapTile* getMapTile(const Coordinate& point, int lod);
-
+    
+    const MapTileInfo& getMapTileInfo(const Coordinate& point, int lod);
+    
 private:
     
     // Requires existing lod
-    const MapTileInfo& getMapTileInfo(const Coordinate& point, int lod);
+    const MapTileInfo& _getMapTileInfo(const Coordinate& point, int lod);
     
     int getNearesLod(int lod);
     

@@ -15,7 +15,8 @@ MapTile::MapTile()
 bool MapTile::init(const CoordinateRegion& region, cocos2d::Sprite* mapFragment)
 {
     addChild(mapFragment);
-    setContentSize(mapFragment->getContentSize());
+    mapFragment->setAnchorPoint({0, 1});
+    mapFragment->setPosition({0, getContentSize().height});
     return true;
 }
 
@@ -31,5 +32,6 @@ MapTile* MapTile::create(const CoordinateRegion& region, cocos2d::Sprite* mapFra
 MapTile* MapTile::getOrCreate(const MapTileInfo& tileInfo)
 {
     auto sprite = cocos2d::Sprite::create(tileInfo.name);
+    sprite->setScale(CC_CONTENT_SCALE_FACTOR());
     return create(tileInfo.region, sprite);
 }

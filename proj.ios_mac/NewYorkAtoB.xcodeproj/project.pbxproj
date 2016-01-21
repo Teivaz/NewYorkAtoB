@@ -19,6 +19,10 @@
 		0BA3922B1C4EC2C500210CA3 /* MapLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BA392281C4EC2C500210CA3 /* MapLoader.cpp */; };
 		0BA3922F1C502E6A00210CA3 /* MapTileInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BA3922D1C502E6A00210CA3 /* MapTileInfo.cpp */; };
 		0BA392301C502E6A00210CA3 /* MapTileInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BA3922D1C502E6A00210CA3 /* MapTileInfo.cpp */; };
+		0BA392341C50C5AA00210CA3 /* MapTileLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BA392321C50C5AA00210CA3 /* MapTileLayer.cpp */; };
+		0BA392351C50C5AA00210CA3 /* MapTileLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BA392321C50C5AA00210CA3 /* MapTileLayer.cpp */; };
+		0BA392371C50E91500210CA3 /* blank.png in Resources */ = {isa = PBXBuildFile; fileRef = 0BA392361C50E91500210CA3 /* blank.png */; };
+		0BA392381C50E91500210CA3 /* blank.png in Resources */ = {isa = PBXBuildFile; fileRef = 0BA392361C50E91500210CA3 /* blank.png */; };
 		1AC6FB21180E996B004C840B /* libcocos2d Mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC6FAF9180E9839004C840B /* libcocos2d Mac.a */; };
 		1AC6FB30180E99EB004C840B /* libcocos2d iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC6FB07180E9839004C840B /* libcocos2d iOS.a */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -116,6 +120,9 @@
 		0BA3922D1C502E6A00210CA3 /* MapTileInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapTileInfo.cpp; sourceTree = "<group>"; };
 		0BA3922E1C502E6A00210CA3 /* MapTileInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapTileInfo.h; sourceTree = "<group>"; };
 		0BA392311C50364100210CA3 /* Coordinates.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Coordinates.h; sourceTree = "<group>"; };
+		0BA392321C50C5AA00210CA3 /* MapTileLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapTileLayer.cpp; sourceTree = "<group>"; };
+		0BA392331C50C5AA00210CA3 /* MapTileLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapTileLayer.h; sourceTree = "<group>"; };
+		0BA392361C50E91500210CA3 /* blank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blank.png; sourceTree = "<group>"; };
 		1AC6FAE5180E9839004C840B /* cocos2d_libs.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = cocos2d_libs.xcodeproj; path = ../cocos2d/build/cocos2d_libs.xcodeproj; sourceTree = "<group>"; };
 		1ACB3243164770DE00914215 /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../../cocos2dx/platform/third_party/ios/libraries/libcurl.a; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -290,6 +297,7 @@
 		46880B7519C43A67006E1F66 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0BA392361C50E91500210CA3 /* blank.png */,
 				0BA3921C1C4C37E900210CA3 /* map */,
 			);
 			name = Resources;
@@ -313,6 +321,8 @@
 				0BA3922D1C502E6A00210CA3 /* MapTileInfo.cpp */,
 				0BA3922E1C502E6A00210CA3 /* MapTileInfo.h */,
 				0BA392311C50364100210CA3 /* Coordinates.h */,
+				0BA392321C50C5AA00210CA3 /* MapTileLayer.cpp */,
+				0BA392331C50C5AA00210CA3 /* MapTileLayer.h */,
 			);
 			name = Classes;
 			path = ../Classes;
@@ -464,6 +474,7 @@
 				5087E78617EB970100C73F5D /* Icon-76.png in Resources */,
 				5087E77F17EB970100C73F5D /* Default@2x.png in Resources */,
 				50EF629917ECD46A001EB2F8 /* Icon-100.png in Resources */,
+				0BA392371C50E91500210CA3 /* blank.png in Resources */,
 				5087E78317EB970100C73F5D /* Icon-152.png in Resources */,
 				5087E77D17EB970100C73F5D /* Default-568h@2x.png in Resources */,
 				5087E78517EB970100C73F5D /* Icon-72.png in Resources */,
@@ -488,6 +499,7 @@
 			files = (
 				503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */,
 				0BA3921E1C4C37E900210CA3 /* map in Resources */,
+				0BA392381C50E91500210CA3 /* blank.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -504,6 +516,7 @@
 				0BA3922A1C4EC2C500210CA3 /* MapLoader.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
+				0BA392341C50C5AA00210CA3 /* MapTileLayer.cpp in Sources */,
 				0BA3922F1C502E6A00210CA3 /* MapTileInfo.cpp in Sources */,
 				0BA392261C4EB11E00210CA3 /* MapLayer.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
@@ -516,6 +529,7 @@
 			files = (
 				0BA392271C4EB11E00210CA3 /* MapLayer.cpp in Sources */,
 				0BA3922B1C4EC2C500210CA3 /* MapLoader.cpp in Sources */,
+				0BA392351C50C5AA00210CA3 /* MapTileLayer.cpp in Sources */,
 				0BA392221C4C3CD500210CA3 /* MapTile.cpp in Sources */,
 				0BA392301C502E6A00210CA3 /* MapTileInfo.cpp in Sources */,
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,

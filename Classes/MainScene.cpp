@@ -1,7 +1,7 @@
 #include "MainScene.h"
 #include "MapLoader.h"
 
-#include "MapTile.h"
+#include "MapLayer.h"
 
 USING_NS_CC;
 
@@ -70,9 +70,11 @@ bool MapViewLayer::init()
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu, 1);
 
-    
-    auto t = Context.Loader->getMapTile({10, 10}, 0);
-    this->addChild(t, 2);
+    auto t = MapLayer::create();
+    t->setPosition({0, visibleSize.height});
+    t->setAnchorPoint({0, 1});
+    t->setViewSize(visibleSize);
+    this->addChild(t);
     
     return true;
 }

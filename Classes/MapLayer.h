@@ -11,6 +11,7 @@
 #include "cocos2d.h"
 #include "Coordinates.h"
 
+class MapTileLayer;
 
 // MapLayer is responsible for converting pixels to coordinates
 // and representing a tiled map
@@ -40,5 +41,6 @@ private:
 private:
     int m_lod;
     float m_mapScale;
+    MapTileLayer* m_tileLayer;
     
 };

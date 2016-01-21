@@ -55,6 +55,7 @@ bool MapLoader::LoadMapConfig(const std::string& mapConfigPath)
     }
     m_tileLods.resize(m_maxLod);
     m_defaultTile = MapTileInfo(0, 0, 0, m_tileWidth, m_tileHeight, s_blankTileName);
+    m_defaultTile.blank = true;
     
     // Parse tile infos
     auto& tiles = jsonDocument.FindMember("tiles")->value;
@@ -75,7 +76,7 @@ bool MapLoader::LoadMapConfig(const std::string& mapConfigPath)
         int y2 = bounds[3].GetInt();
         auto& nameValue = tile.FindMember("name")->value;
         std::string name(nameValue.GetString(), nameValue.GetStringLength());
-        MapTileInfo info = MapTileInfo(lod, x1, y1, x2, y2, name);
+        MapTileInfo info = MapTileInfo(lod, x1, y1, x2-x1, y2-y1, name);
         m_tileLods[lod].push_back(info);
     }
     
@@ -83,6 +84,11 @@ bool MapLoader::LoadMapConfig(const std::string& mapConfigPath)
 }
 
 const MapTileInfo& MapLoader::getMapTileInfo(const Coordinate& point, int lod)
+{
+    return _getMapTileInfo(point, getNearesLod(lod));
+}
+
+const MapTileInfo& MapLoader::_getMapTileInfo(const Coordinate& point, int lod)
 {
     const TileInfos& tileInfoMap = m_tileLods[lod];
     auto iterator = std::find(tileInfoMap.cbegin(), tileInfoMap.cend(), point);
@@ -101,6 +107,6 @@ MapTile* MapLoader::getMapTile(const Coordinate& point, int lod)
 int MapLoader::getNearesLod(int lod)
 {
     if(lod < 0) return 0;
-    if(lod > m_maxLod) return m_maxLod;
+    if(lod >= m_maxLod) return m_maxLod-1;
     return lod;
 }
