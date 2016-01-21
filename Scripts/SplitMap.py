@@ -12,7 +12,8 @@ MAX_LOD = 3
 
 # convertor config
 TILE_SIZE = (512, 512)
-DEST_FOLDER = "../Resources/map/"
+RESOURCES_FOLDER = "../Resources/"
+DEST_FOLDER = "map/"
 CONFIG_NAME = "map.json"
 
 def nameForTile(left, top, lod):
@@ -50,7 +51,7 @@ def TileImage(image, mapCoordinates, lod, config):
 							(regionSize[3]+mapOffsetY)*lodMultiplier],
 				"name": DEST_FOLDER + subimageName}
 			config.append(configItem)
-			subimage.save(DEST_FOLDER + subimageName)
+			subimage.save(RESOURCES_FOLDER + DEST_FOLDER + subimageName)
 			regionSize[0] += TILE_SIZE[0]
 			regionSize[2] += TILE_SIZE[0]
 		regionSize[1] += TILE_SIZE[1]
@@ -86,7 +87,7 @@ def convert(mapFileName, mapCoordinates, maxLod):
 		"tiles": lodConfig
 	}
 
-	cf = open(DEST_FOLDER+CONFIG_NAME, "w")
+	cf = open(RESOURCES_FOLDER+DEST_FOLDER+CONFIG_NAME, "w")
 	cf.write(json.dumps(config, indent=4, sort_keys=True))
 	cf.close()
 
