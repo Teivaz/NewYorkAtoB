@@ -14,8 +14,6 @@ USING_NS_CC;
 
 bool MapLayer::init(){
     m_lod = 0;
-    //setAnchorPoint({0.5, 0.5});
-    
     m_tileLayer = MapTileLayer::create();
     addChild(m_tileLayer);
     m_tileLayer->setPosition(cocos2d::Vec2::ZERO);
@@ -28,8 +26,6 @@ bool MapLayer::init(){
 void MapLayer::setViewSize(const cocos2d::Size& size)
 {
     setContentSize(size);
-    m_tileLayer->setPosition(cocos2d::Vec2(0, size.height));
-    m_tileLayer->setAnchorPoint({0, 1});
     rebuildMap();
 }
 
@@ -70,6 +66,8 @@ void MapLayer::calculateTransformation()
     m_transform.getTranslation(&offset);
     setScale(scale.x);
     setPosition(Vec2(offset.x, offset.y));
+    
+
 }
 
 void MapLayer::adjustScale(float s, const cocos2d::Vec2& pivot)
@@ -90,23 +88,19 @@ void MapLayer::adjustPosition(const cocos2d::Vec2& pos)
 void MapLayer::rebuildMap()
 {
     Vec3 scale;
+    Vec3 offset;
     
     m_transform.getScale(&scale);
+    m_transform.getTranslation(&offset);
     
+    Vec3 a;
+    Vec3 b(getContentSize(), 0);
+    Mat4 inv = m_transform.getInversed();
+    inv.transformPoint(&a);
+    inv.transformPoint(&b);
     
-    // create a layer for tiles in coordinates that will overlap view in coordinates
-    // calculate lod level for
-    
-    //setScale(1/4.0);
-    CoordinateRegion region;
-    cocos2d::Rect rect(getPosition(), getContentSize());
-    rect.size = rect.size / scale.x;
-
-    //rect.origin.y -= rect.size.height;
-    
-    //rect.size = rect.size;
     m_lod = 0;
-    m_tileLayer->tileRegion(rect, m_lod);
+    m_tileLayer->tileRegion({a.x, a.y}, {b.x, b.y}, m_lod);
 }
 
 void MapLayer::onLodChanged()

@@ -18,69 +18,47 @@ bool MapTileLayer::init()
     return true;
 }
 
-void MapTileLayer::tileRegion(const CoordinateRegion& region, int lod)
+void MapTileLayer::tileRegion(const Coordinate& a, const Coordinate& b, int lod)
 {
     removeAllChildren();
     
     MapLoader* loader = MapViewLayer::Context.Loader;
-    const auto left = region.getMinX();
-    const auto right = region.getMaxX();
-    const auto top = region.getMinY();
-    const auto bottom = region.getMaxY();
+    float height = fabsf(b.y - a.y);
+    const auto left = a.x;
+    const auto right = b.x;
+    const auto bottom = height - b.y;
+    const auto top = height - a.y;
     
-    Coordinate leftTop(left, top);
+    Coordinate leftBot(left, bottom);
     Coordinate rightTop(right, top);
-    Coordinate leftBottom(left, bottom);
-    // sweep left to right, top to bottom
+    Coordinate size = loader->getTileSize(lod);
     
-    int tilesWidth = 1;
-    const MapTileInfo* info = &loader->getMapTileInfo(leftTop, lod);
-    Coordinate offset = leftTop - info->region.origin;
-    offset.y *= -1;
-    addTile(*info, offset);
+    auto ai = loader->getTileIndex(leftBot, lod);
+    auto bi = loader->getTileIndex(rightTop, lod);
+    Coordinate offset;// = loader->getOffsetForTile(leftTop, lod);
     
-    // set scale to compensate lod
-    float scale = 1 << info->lod;
-    setScale(scale);
-             
-    while(true)
+    int tilesWidth = bi.first - ai.first;
+    int tilesHeight = bi.second - ai.second;
+    
+    const MapTileInfo& info = loader->getMapTileInfo(ai, lod);
+    offset = info.region.origin;
+    
+    for(int i = ai.second; i <= bi.second; ++i) // y axis
     {
-        if(*info == rightTop)
-            break;
-        ++tilesWidth;
-        info = &loader->getMapTileInfo(info->getPointFromNextRegion(1, 0), lod);
-        addTile(*info, offset);
-    }
-    
-    int tilesHeight = 1;
-    info = &loader->getMapTileInfo(leftTop, lod);
-    while(true)
-    {
-        if(*info == leftBottom)
-            break;
-        ++tilesHeight;
-        info = &loader->getMapTileInfo(info->getPointFromNextRegion(0, 1), lod);
-        addTile(*info, offset);
-    }
-    
-    info = &loader->getMapTileInfo(leftTop, lod);
-    for(int i = 1; i <= tilesHeight; ++i) // y axis
-    {
-        for(int j = 1; j <= tilesWidth; ++j) // x axis
+        for(int j = ai.first; j <= bi.first; ++j) // x axis
         {
-            const MapTileInfo& tileInfo = loader->getMapTileInfo(info->getPointFromNextRegion(j, i), lod);
-            addTile(tileInfo, offset);
+            Coordinate position = Coordinate(j*size.x, height - i*size.y);
+            const MapTileInfo& tileInfo = loader->getMapTileInfo({j, i}, lod);
+            addTile(tileInfo, position);
         }
     }
 }
 
-void MapTileLayer::addTile(const MapTileInfo& info, const Coordinate& offset)
+void MapTileLayer::addTile(const MapTileInfo& info, const Coordinate& position)
 {
     if(info.blank)return;
     MapTile* tile = MapTile::getOrCreate(info);
-    tile->setAnchorPoint({0,1});
-    tile->setPosition(info.region.origin - offset);
-    tile->setPositionY(-tile->getPositionY());
+    tile->setPosition(position);
     float scale = 1 << info.lod;
     tile->setPosition(tile->getPosition() / scale);
     

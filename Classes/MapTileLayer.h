@@ -18,8 +18,8 @@ public:
     CREATE_FUNC(MapTileLayer);
     bool init();
     
-    void tileRegion(const CoordinateRegion& region, int lod);
+    void tileRegion(const Coordinate& a, const Coordinate& b, int lod);
     
 private:
-    void addTile(const MapTileInfo& info, const Coordinate& offset);
+    void addTile(const MapTileInfo& info, const Coordinate& position);
 };

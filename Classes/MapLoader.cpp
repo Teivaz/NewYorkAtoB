@@ -77,34 +77,63 @@ bool MapLoader::LoadMapConfig(const std::string& mapConfigPath)
         auto& nameValue = tile.FindMember("name")->value;
         std::string name(nameValue.GetString(), nameValue.GetStringLength());
         MapTileInfo info = MapTileInfo(lod, x1, y1, x2-x1, y2-y1, name);
-        m_tileLods[lod].push_back(info);
+        TileIndex index = getTileIndex(info.region.origin, lod);
+        m_tileLods[lod][index.first][index.second] = info;
     }
     
     return true;
 }
 
-const MapTileInfo& MapLoader::getMapTileInfo(const Coordinate& point, int lod)
+Coordinate MapLoader::getTileSize(int _lod) const
 {
-    return _getMapTileInfo(point, getNearesLod(lod));
+    int lod = getNearesLod(_lod);
+    float tileWidth = (1 << lod) * m_tileWidth;
+    float tileHeight = (1 << lod) * m_tileHeight;
+    return {tileWidth, tileHeight};
 }
 
-const MapTileInfo& MapLoader::_getMapTileInfo(const Coordinate& point, int lod)
+Coordinate MapLoader::getOffsetForTile(const Coordinate& point, int _lod) const
 {
-    const TileInfos& tileInfoMap = m_tileLods[lod];
-    auto iterator = std::find(tileInfoMap.cbegin(), tileInfoMap.cend(), point);
-    if(iterator == tileInfoMap.end()){
+    int lod = getNearesLod(_lod);
+    int tileWidth = (1 << lod) * m_tileWidth;
+    int tileHeight = (1 << lod) * m_tileHeight;
+    int x = (int)point.x % tileWidth;
+    int y = (int)point.y % tileHeight;
+    return Coordinate(x, -y);
+}
+
+std::pair<int, int> MapLoader::getTileIndex(const Coordinate& point, int _lod) const
+{
+    int lod = getNearesLod(_lod);
+    float tileWidth = (1 << lod) * m_tileWidth;
+    float tileHeight = (1 << lod) * m_tileHeight;
+    int x = floor(point.x / tileWidth);
+    int y = floor(point.y / tileHeight);
+    return {x, y};
+}
+
+const MapTileInfo& MapLoader::getMapTileInfo(const TileIndex& index, int lod)
+{
+    return _getMapTileInfo(index, getNearesLod(lod));
+}
+
+const MapTileInfo& MapLoader::_getMapTileInfo(const TileIndex& index, int lod)
+{
+    const TileMap& map = m_tileLods[lod];
+    auto column = map.find(index.first);
+    if(column == map.end())
+    {
         return m_defaultTile;
     }
-    return *iterator;
+    auto info = column->second.find(index.second);
+    if(info == column->second.end())
+    {
+        return m_defaultTile;
+    }
+    return info->second;
 }
 
-MapTile* MapLoader::getMapTile(const Coordinate& point, int lod)
-{
-    int nearestLod = getNearesLod(lod);
-    return MapTile::getOrCreate(getMapTileInfo(point, nearestLod));
-}
-
-int MapLoader::getNearesLod(int lod)
+int MapLoader::getNearesLod(int lod) const
 {
     if(lod < 0) return 0;
     if(lod >= m_maxLod) return m_maxLod-1;

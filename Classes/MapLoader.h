@@ -15,26 +15,29 @@ class MapTile;
 
 class MapLoader{
 public:
+    typedef std::pair<int, int> TileIndex;
     MapLoader();
     
     bool LoadMapConfig(const std::string& mapConfigPath);
     
-    MapTile* getMapTile(const Coordinate& point, int lod);
+//    MapTile* getMapTile(const Coordinate& point, int lod);
     
-    const MapTileInfo& getMapTileInfo(const Coordinate& point, int lod);
-    
+    const MapTileInfo& getMapTileInfo(const TileIndex& index, int lod);
+    TileIndex getTileIndex(const Coordinate& point, int lod) const;
+    Coordinate getOffsetForTile(const Coordinate& point, int lod) const;
+    Coordinate getTileSize(int lod) const;
 private:
     
     // Requires existing lod
-    const MapTileInfo& _getMapTileInfo(const Coordinate& point, int lod);
+    const MapTileInfo& _getMapTileInfo(const TileIndex& index, int lod);
     
-    int getNearesLod(int lod);
+    int getNearesLod(int lod) const;
     
+    typedef std::map<int, MapTileInfo> TileColumn;
+    typedef std::map<int, TileColumn> TileMap;
+    typedef std::vector<TileMap> TileLod;
     
-    typedef std::list<MapTileInfo> TileInfos;
-    typedef std::vector<TileInfos> TileInfoLod;
-    
-    TileInfoLod m_tileLods;
+    TileLod m_tileLods;
     int m_maxLod;
     int m_tileWidth;
     int m_tileHeight;
