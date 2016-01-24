@@ -21,11 +21,17 @@
 #include "math/Vec3.h"
 #include "math/MathUtil.h"
 #include "base/ccMacros.h"
+#include "math/Vec2.h"
 
 NS_CC_MATH_BEGIN
 
 Vec3::Vec3()
     : x(0.0f), y(0.0f), z(0.0f)
+{
+}
+
+Vec3::Vec3(const Vec2& xy, float zz)
+    : x(xy.x), y(xy.y), z(zz)
 {
 }
 

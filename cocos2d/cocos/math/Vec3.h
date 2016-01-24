@@ -31,6 +31,7 @@
 
 NS_CC_MATH_BEGIN
 
+class Vec2;
 class Mat4;
 class Quaternion;
 
@@ -76,6 +77,8 @@ public:
      */
     Vec3(float xx, float yy, float zz);
 
+    Vec3(const Vec2& xy, float zz);
+    
     /**
      * Constructs a new vector from the values in the specified array.
      *

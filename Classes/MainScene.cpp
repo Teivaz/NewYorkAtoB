@@ -3,6 +3,8 @@
 
 #include "MapLayer.h"
 
+#include "TouchController.h"
+
 USING_NS_CC;
 
 MapContext MapViewLayer::Context;
@@ -45,6 +47,14 @@ bool MapViewLayer::init()
         return false;
     }
     
+    auto touchController = TouchController::create();
+    addChild(touchController);
+    
+    touchController->onPinchEnd = [this](){this->onPinchEnded();};
+    touchController->onDragEnd = [this](){this->onPanEnded();};
+    touchController->onPinch = [this](const cocos2d::Vec2& delta, float scale, const cocos2d::Vec2& scalePivot){this->onPinch(delta, scale, scalePivot);};
+    touchController->onDrag = [this](const cocos2d::Vec2& delta){this->onPan(delta);};
+    
     m_loader = new MapLoader();
     m_loader->LoadMapConfig("map/map.json");
     Context.Loader = m_loader; // Set this loader as current
@@ -70,15 +80,35 @@ bool MapViewLayer::init()
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu, 1);
 
-    auto t = MapLayer::create();
-    t->setPosition({0, visibleSize.height});
-    t->setAnchorPoint({0, 1});
-    t->setViewSize(visibleSize);
-    this->addChild(t);
+    m_layer = MapLayer::create();
+    m_layer->setAnchorPoint({0, 0});
+    m_layer->setViewSize(visibleSize);
+    this->addChild(m_layer);
     
     return true;
 }
 
+
+void MapViewLayer::onPan(const cocos2d::Vec2& delta)
+{
+    m_layer->adjustPosition(delta);
+}
+
+void MapViewLayer::onPanEnded()
+{
+    m_layer->applyAdjust();
+}
+
+void MapViewLayer::onPinch(const cocos2d::Vec2& delta, float scale, const cocos2d::Vec2& scalePivot)
+{
+    m_layer->adjustScale(scale, scalePivot);
+    m_layer->adjustPosition(delta);
+}
+
+void MapViewLayer::onPinchEnded()
+{
+    m_layer->applyAdjust();
+}
 
 void MapViewLayer::menuCloseCallback(Ref* pSender)
 {

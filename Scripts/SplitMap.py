@@ -25,10 +25,13 @@ def nameForTile(left, top, lod):
 
 def TileImage(image, mapCoordinates, lod, config):
 
-	lodMultiplier = pow(2, lod);
+	# Scale down the image to the corresponding LOD
+	lodMultiplier = pow(2, lod)
 	imageSize = image.size
 	imageSize = (imageSize[0]/lodMultiplier, imageSize[1]/lodMultiplier)
 	image = image.resize(imageSize, PIL.Image.BICUBIC)
+
+	# Region always has (0,0) as top left corner
 	regionSize = [0, 0, TILE_SIZE[0], TILE_SIZE[1]]
 	mapOffsetX = mapCoordinates[0]/lodMultiplier
 	mapOffsetY = mapCoordinates[1]/lodMultiplier

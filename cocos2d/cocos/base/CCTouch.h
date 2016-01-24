@@ -125,6 +125,11 @@ public:
     {
         return _id;
     }
+    
+    /** Override start point with current value as if touch just started
+     *
+     */
+    void resetTouch();
 
 private:
     int _id;

@@ -70,4 +70,10 @@ Vec2 Touch::getDelta() const
     return getLocation() - getPreviousLocation();
 }
 
+void Touch::resetTouch()
+{
+    _startPointCaptured = false;
+    setTouchInfo(_id, _point.x, _point.y);
+}
+
 NS_CC_END

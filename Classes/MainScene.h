@@ -4,6 +4,7 @@
 #include "MapContext.h"
 
 class MapLoader;
+class MapLayer;
 
 class MapViewLayer : public cocos2d::Layer
 {
@@ -24,6 +25,13 @@ public:
     MapViewLayer();
     virtual ~MapViewLayer();
     
+    void onPan(const cocos2d::Vec2& delta);
+    void onPanEnded();
+    void onPinch(const cocos2d::Vec2& delta, float scale, const cocos2d::Vec2& scalePivot);
+    void onPinchEnded();
+    
 private:
     MapLoader* m_loader;
+    
+    MapLayer* m_layer;
 };

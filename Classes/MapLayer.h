@@ -32,8 +32,12 @@ public:
     
     // sets the center point of the map in coordinates
     void setMapFocus(const Coordinate& center);
+    void adjustPosition(const cocos2d::Vec2& pos);
+    void adjustScale(float s, const cocos2d::Vec2& pivot);
     
+    void applyAdjust();
 private:
+    void calculateTransformation();
     void rebuildMap();
     
     void onLodChanged();
@@ -42,5 +46,10 @@ private:
     int m_lod;
     float m_mapScale;
     MapTileLayer* m_tileLayer;
-    
+    cocos2d::Vec2 m_position;
+    cocos2d::Vec2 m_adjustedPosition;
+    cocos2d::Vec2 m_adjustedScalePivot;
+    float m_scale;
+    float m_adjustedScale;
+    cocos2d::Mat4 m_transform;
 };
