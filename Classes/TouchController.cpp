@@ -231,6 +231,7 @@ void TouchController::onPinchMoved()
         float scale = distance.lengthSquared() / distanceStart.lengthSquared();
         scale = sqrtf(scale);
         
+        mid.y = mid.y - getContentSize().height;// - mid.y;
         onPinch(moveDelta, scale, mid);
     }
 }
