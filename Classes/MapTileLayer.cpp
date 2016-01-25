@@ -58,11 +58,12 @@ void MapTileLayer::addTile(const MapTileInfo& info, const Coordinate& position, 
 {
     if(!info.blank)
     {
-        ;
+        const MapTileInfo& blank = MapViewLayer::Context.Loader->getBlankTile();
+        MapTile* tile = MapTile::getOrCreate(blank, size);
+        tile->setPosition(position);
+        addChild(tile);
     }
     MapTile* tile = MapTile::getOrCreate(info, size);
     tile->setPosition(position);
-    float scale = 1 << info.lod;
-    
     addChild(tile);
 }

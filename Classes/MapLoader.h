@@ -22,6 +22,7 @@ public:
     
 //    MapTile* getMapTile(const Coordinate& point, int lod);
     
+    const MapTileInfo& getBlankTile() const {return m_defaultTile;}
     const MapTileInfo& getMapTileInfo(const TileIndex& index, int lod);
     TileIndex getTileIndex(const Coordinate& point, int lod) const;
     Coordinate getOffsetForTile(const Coordinate& point, int lod) const;

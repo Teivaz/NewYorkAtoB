@@ -8,7 +8,7 @@ import json
 # should move this to config
 MAP_NAME = "../RawResources/new_york_map.jpg"
 MAP_COORDINATES = (0, 0, 3398, 4842)
-MAX_LOD = 3
+MAX_LOD = 4
 
 # convertor config
 TILE_SIZE = (512, 512)
@@ -73,6 +73,8 @@ def convert(mapFileName, mapCoordinates, maxLod):
 		p.feed(s)
 	fp.close()
 	im = p.close()
+
+	im = im.convert("RGBA")
 	
 	lodConfig = []
 	for lod in range(0, maxLod):
