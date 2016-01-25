@@ -32,6 +32,7 @@
 #import <OpenGLES/EAGL.h>
 
 #import "base/CCDirector.h"
+#import "renderer/CCTextureCache.h"
 #import "CCEAGLView-ios.h"
 
 static id s_sharedDirectorCaller;
@@ -108,6 +109,12 @@ static id s_sharedDirectorCaller;
     cocos2d::Director* director = cocos2d::Director::getInstance();
     [EAGLContext setCurrentContext: [(CCEAGLView*)director->getOpenGLView()->getEAGLView() context]];
     director->mainLoop();
+}
+
+-(void) freeTextureCache
+{
+    cocos2d::Director* director = cocos2d::Director::getInstance();
+    director->getTextureCache()->removeUnusedTextures();
 }
 
 @end

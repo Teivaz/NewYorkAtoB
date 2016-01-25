@@ -42,7 +42,13 @@ def TileImage(image, mapCoordinates, lod, config):
 		regionSize[0] = 0
 		regionSize[2] = TILE_SIZE[0]
 		while regionSize[0] < mapSizeX: #till the end of X axis
-			subimage = image.crop(tuple(regionSize))
+			subimageRegion = (
+				regionSize[0], 
+				imageSize[1]-regionSize[3], 
+				regionSize[2], 
+				imageSize[1]-regionSize[1])
+			print(subimageRegion)
+			subimage = image.crop(subimageRegion)
 			regionIndexX = regionSize[0]+mapOffsetX
 			regionIndexY = regionSize[1]+mapOffsetY
 			subimageName = nameForTile(regionIndexX, regionIndexY, lod)
@@ -84,7 +90,7 @@ def convert(mapFileName, mapCoordinates, maxLod):
 		"map":
 		{
 			"name": mapFileName,
-			"bounds": [mapCoordinates],
+			"bounds": mapCoordinates,
 			"maxLod": maxLod,
 			"tileWidth": TILE_SIZE[0],
 			"tileHeight": TILE_SIZE[1]

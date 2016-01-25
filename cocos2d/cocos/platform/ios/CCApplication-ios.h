@@ -99,6 +99,11 @@ public:
     @param new height
     */
     virtual void applicationScreenSizeChanged(int newWidth, int newHeight);
+    
+    /**
+     @brief Notify application to free resources
+     */
+    virtual void applicationDidReceiveMemoryWarning();
 
 protected:
     static Application * sm_pSharedApplication;

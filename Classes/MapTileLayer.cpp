@@ -15,39 +15,36 @@
 
 bool MapTileLayer::init()
 {
+    m_lod = -1;
+    m_indexA = {0, 0};
+    m_indexB = {0, 0};
     return true;
 }
 
 void MapTileLayer::tileRegion(const Coordinate& a, const Coordinate& b, int lod)
 {
-    removeAllChildren();
-    
     MapLoader* loader = MapViewLayer::Context.Loader;
-    float height = fabsf(b.y - a.y);
-    const auto left = a.x;
-    const auto right = b.x;
-    const auto bottom = height - b.y;
-    const auto top = height - a.y;
-    
-    Coordinate leftBot(left, bottom);
-    Coordinate rightTop(right, top);
     Coordinate size = loader->getTileSize(lod);
     
-    auto ai = loader->getTileIndex(leftBot, lod);
-    auto bi = loader->getTileIndex(rightTop, lod);
-    Coordinate offset;// = loader->getOffsetForTile(leftTop, lod);
+    auto ai = loader->getTileIndex(a, lod);
+    auto bi = loader->getTileIndex(b, lod);
     
-    int tilesWidth = bi.first - ai.first;
-    int tilesHeight = bi.second - ai.second;
+    if(ai == m_indexA && bi == m_indexB && m_lod == lod){
+        // don't rebuild map
+        return;
+    }
+    removeAllChildren();
+    m_indexA = ai;
+    m_indexB = bi;
+    m_lod = lod;
     
-    const MapTileInfo& info = loader->getMapTileInfo(ai, lod);
-    offset = info.region.origin;
+    cocos2d::log("Map rebuild (%d,%d) (%d,%d)", ai.first, ai.second, bi.first, bi.second);
     
     for(int i = ai.second; i <= bi.second; ++i) // y axis
     {
         for(int j = ai.first; j <= bi.first; ++j) // x axis
         {
-            Coordinate position = Coordinate(j*size.x, height - i*size.y);
+            Coordinate position = Coordinate(j*size.x, i*size.y);
             const MapTileInfo& tileInfo = loader->getMapTileInfo({j, i}, lod);
             addTile(tileInfo, position, size);
         }

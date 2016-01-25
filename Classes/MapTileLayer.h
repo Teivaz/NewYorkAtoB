@@ -22,4 +22,7 @@ public:
     
 private:
     void addTile(const MapTileInfo& info, const Coordinate& position, const Coordinate& size);
+    std::pair<int, int> m_indexA;
+    std::pair<int, int> m_indexB;
+    int m_lod;
 };

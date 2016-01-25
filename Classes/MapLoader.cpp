@@ -53,6 +53,16 @@ bool MapLoader::LoadMapConfig(const std::string& mapConfigPath)
     if(mapInfo.HasMember("tileWidth")){
         m_tileWidth = mapInfo.FindMember("tileWidth")->value.GetInt();
     }
+    if(mapInfo.HasMember("bounds")){
+        auto& bounds = mapInfo.FindMember("bounds")->value;
+        int x1 = bounds[0].GetInt();
+        int y1 = bounds[1].GetInt();
+        int x2 = bounds[2].GetInt();
+        int y2 = bounds[3].GetInt();
+        m_mapWidth = x2 - x1;
+        m_mapHeight = y2 - y1;
+    }
+    
     m_tileLods.resize(m_maxLod);
     m_defaultTile = MapTileInfo(0, 0, 0, m_tileWidth, m_tileHeight, s_blankTileName);
     m_defaultTile.blank = true;
@@ -99,7 +109,7 @@ Coordinate MapLoader::getOffsetForTile(const Coordinate& point, int _lod) const
     int tileHeight = (1 << lod) * m_tileHeight;
     int x = (int)point.x % tileWidth;
     int y = (int)point.y % tileHeight;
-    return Coordinate(x, -y);
+    return Coordinate(x, y);
 }
 
 std::pair<int, int> MapLoader::getTileIndex(const Coordinate& point, int _lod) const

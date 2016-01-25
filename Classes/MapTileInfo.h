@@ -22,6 +22,4 @@ struct MapTileInfo{
     
     // If point is inside the tile
     bool operator==(const Coordinate& point) const;
-    
-    Coordinate getPointFromNextRegion(int x, int y) const;
 };

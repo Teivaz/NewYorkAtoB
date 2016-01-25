@@ -150,6 +150,11 @@ void Application::applicationScreenSizeChanged(int newWidth, int newHeight) {
 
 }
 
+void Application::applicationDidReceiveMemoryWarning()
+{
+    [[CCDirectorCaller sharedDirectorCaller] freeTextureCache];
+}
+
 NS_CC_END
 
 #endif // CC_PLATFORM_IOS

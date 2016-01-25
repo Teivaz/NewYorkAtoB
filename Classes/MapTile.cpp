@@ -15,8 +15,8 @@ MapTile::MapTile()
 bool MapTile::init(const CoordinateRegion& region, cocos2d::Sprite* mapFragment)
 {
     addChild(mapFragment);
-    mapFragment->setAnchorPoint({0, 1});
-    mapFragment->setPosition({0, getContentSize().height});
+    mapFragment->setAnchorPoint({0, 0});
+    mapFragment->setPosition({0, 0});//getContentSize().height});
     return true;
 }
 

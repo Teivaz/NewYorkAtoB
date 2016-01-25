@@ -27,6 +27,8 @@ public:
     TileIndex getTileIndex(const Coordinate& point, int lod) const;
     Coordinate getOffsetForTile(const Coordinate& point, int lod) const;
     Coordinate getTileSize(int lod) const;
+    
+    int getMapHeight() const {return m_mapHeight;}
 private:
     
     // Requires existing lod
@@ -42,6 +44,9 @@ private:
     int m_maxLod;
     int m_tileWidth;
     int m_tileHeight;
+    
+    int m_mapWidth;
+    int m_mapHeight;
     
     MapTileInfo m_defaultTile;
 };

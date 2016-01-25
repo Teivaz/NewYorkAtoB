@@ -37,6 +37,7 @@
 -(void) stopMainLoop;
 -(void) doCaller: (id) sender;
 -(void) setAnimationInterval:(double)interval;
+-(void) freeTextureCache;
 +(id) sharedDirectorCaller;
 +(void) destroy;
 @end

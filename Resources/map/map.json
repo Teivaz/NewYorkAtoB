@@ -1,12 +1,10 @@
 {
     "map": {
         "bounds": [
-            [
-                0, 
-                0, 
-                3398, 
-                4842
-            ]
+            0, 
+            0, 
+            3398, 
+            4842
         ], 
         "maxLod": 4, 
         "name": "../RawResources/new_york_map.jpg", 
