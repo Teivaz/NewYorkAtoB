@@ -99,11 +99,36 @@ void MapLayer::rebuildMap()
     inv.transformPoint(&a);
     inv.transformPoint(&b);
     
-    m_lod = 0;
+    int lod = lodForScale(scale.x);
+    if(lod != m_lod)
+    {
+        m_lod = lod;
+        onLodChanged();
+    }
     m_tileLayer->tileRegion({a.x, a.y}, {b.x, b.y}, m_lod);
+}
+
+int MapLayer::lodForScale(float scale)
+{
+    float targetScale = 1 / (CC_CONTENT_SCALE_FACTOR() * scale);
+    unsigned int v = targetScale;
+    v--;
+    v |= v >> 1;
+    v |= v >> 2;
+    v |= v >> 4;
+    v |= v >> 8;
+    v |= v >> 16;
+    v++;
+    unsigned int l = v >> 1;
+    if( (v - targetScale) < (targetScale - l) )
+    {
+        l = v;
+    }
+    if(l <= 0) return 0;
+    return log2f(l);
 }
 
 void MapLayer::onLodChanged()
 {
-    //
+    cocos2d::log("LOD changed to: %d", m_lod);
 }

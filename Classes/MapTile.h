@@ -16,5 +16,5 @@ private:
     bool init(const CoordinateRegion& region, cocos2d::Sprite* mapFragment);
 public:
     static MapTile* create(const CoordinateRegion& region, cocos2d::Sprite* mapFragment);
-    static MapTile* getOrCreate(const MapTileInfo& tileInfo);
+    static MapTile* getOrCreate(const MapTileInfo& tileInfo, const Coordinate& size);
 };

@@ -40,6 +40,7 @@ private:
     void calculateTransformation();
     void rebuildMap();
     
+    int lodForScale(float scale);
     void onLodChanged();
     
 private:

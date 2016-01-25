@@ -29,9 +29,15 @@ MapTile* MapTile::create(const CoordinateRegion& region, cocos2d::Sprite* mapFra
     return nullptr;
 }
 
-MapTile* MapTile::getOrCreate(const MapTileInfo& tileInfo)
+MapTile* MapTile::getOrCreate(const MapTileInfo& tileInfo, const Coordinate& size)
 {
     auto sprite = cocos2d::Sprite::create(tileInfo.name);
-    sprite->setScale(CC_CONTENT_SCALE_FACTOR());
+    //sprite->setScale(CC_CONTENT_SCALE_FACTOR());
+    //if(tileInfo.blank)
+    {
+        float spriteScale = sprite->getSpriteFrame()->getOriginalSizeInPixels().width / size.x;
+        sprite->setScale(CC_CONTENT_SCALE_FACTOR() / spriteScale);
+    }
+    
     return create(tileInfo.region, sprite);
 }

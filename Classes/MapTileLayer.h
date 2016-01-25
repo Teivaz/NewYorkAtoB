@@ -21,5 +21,5 @@ public:
     void tileRegion(const Coordinate& a, const Coordinate& b, int lod);
     
 private:
-    void addTile(const MapTileInfo& info, const Coordinate& position);
+    void addTile(const MapTileInfo& info, const Coordinate& position, const Coordinate& size);
 };

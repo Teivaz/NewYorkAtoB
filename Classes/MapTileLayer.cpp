@@ -49,18 +49,20 @@ void MapTileLayer::tileRegion(const Coordinate& a, const Coordinate& b, int lod)
         {
             Coordinate position = Coordinate(j*size.x, height - i*size.y);
             const MapTileInfo& tileInfo = loader->getMapTileInfo({j, i}, lod);
-            addTile(tileInfo, position);
+            addTile(tileInfo, position, size);
         }
     }
 }
 
-void MapTileLayer::addTile(const MapTileInfo& info, const Coordinate& position)
+void MapTileLayer::addTile(const MapTileInfo& info, const Coordinate& position, const Coordinate& size)
 {
-    if(info.blank)return;
-    MapTile* tile = MapTile::getOrCreate(info);
+    if(!info.blank)
+    {
+        ;
+    }
+    MapTile* tile = MapTile::getOrCreate(info, size);
     tile->setPosition(position);
     float scale = 1 << info.lod;
-    tile->setPosition(tile->getPosition() / scale);
     
     addChild(tile);
 }
