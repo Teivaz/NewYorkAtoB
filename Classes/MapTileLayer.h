@@ -12,6 +12,8 @@
 
 struct MapTileInfo;
 
+
+// MapTileLayer is responsible for tiling a region with nearest LOD
 class MapTileLayer : public cocos2d::Node
 {
 public:

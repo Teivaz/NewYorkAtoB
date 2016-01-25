@@ -13,6 +13,8 @@
 
 class MapTile;
 
+
+// MapLoader parses map config and stores
 class MapLoader{
 public:
     typedef std::pair<int, int> TileIndex;
@@ -20,15 +22,13 @@ public:
     
     bool LoadMapConfig(const std::string& mapConfigPath);
     
-//    MapTile* getMapTile(const Coordinate& point, int lod);
-    
     const MapTileInfo& getBlankTile() const {return m_defaultTile;}
     const MapTileInfo& getMapTileInfo(const TileIndex& index, int lod);
     TileIndex getTileIndex(const Coordinate& point, int lod) const;
     Coordinate getOffsetForTile(const Coordinate& point, int lod) const;
     Coordinate getTileSize(int lod) const;
     
-    int getMapHeight() const {return m_mapHeight;}
+    const CoordinateRegion& getMapRect() const {return m_mapRect;}
 private:
     
     // Requires existing lod
@@ -36,6 +36,7 @@ private:
     
     int getNearesLod(int lod) const;
     
+    // TODO: maybe rewrite to Morton numbers
     typedef std::map<int, MapTileInfo> TileColumn;
     typedef std::map<int, TileColumn> TileMap;
     typedef std::vector<TileMap> TileLod;
@@ -45,8 +46,7 @@ private:
     int m_tileWidth;
     int m_tileHeight;
     
-    int m_mapWidth;
-    int m_mapHeight;
+    CoordinateRegion m_mapRect;
     
     MapTileInfo m_defaultTile;
 };

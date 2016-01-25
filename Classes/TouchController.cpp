@@ -211,6 +211,7 @@ void TouchController::onDragMoved()
     if(onDrag)
     {
         onDrag(t->getLocation() - t->getStartLocation());
+        //onDrag(t->getDelta());
     }
 }
 
@@ -224,6 +225,8 @@ void TouchController::onPinchMoved()
     {
         Vec2 mid = (t1->getLocation() + t2->getLocation()) / 2;
         Vec2 midStart = (t1->getStartLocation() + t2->getStartLocation()) / 2;
+        //Vec2 midStart = (t1->getPreviousLocation() + t2->getPreviousLocation()) / 2;
+        //Vec2 moveDelta = (t1->getDelta() + t2->getDelta()) / 2;
         Vec2 moveDelta = mid - midStart;
         
         Vec2 distance(t1->getLocation(), t2->getLocation());

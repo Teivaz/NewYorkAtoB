@@ -15,6 +15,7 @@ class MapTileLayer;
 
 // MapLayer is responsible for converting pixels to coordinates
 // and representing a tiled map
+// This layer is scaled and moved when navigating a map
 class MapLayer : public cocos2d::Node
 {
 public:
@@ -34,14 +35,21 @@ public:
     void setMapFocus(const Coordinate& center);
     void adjustPosition(const cocos2d::Vec2& pos);
     void adjustScale(float s, const cocos2d::Vec2& pivot);
+    void adjustScaleAndPosition(float s, const cocos2d::Vec2& pivot, const cocos2d::Vec2& position);
     
     void applyAdjust();
+    
+    void setBoundsEnabled(bool val){m_enableBounds = val;}
+    void setBounds(const Coordinate& a, const Coordinate& b, float minScale, float maxScale);
+    
 private:
     void calculateTransformation();
+    void applyBounds(const cocos2d::Vec3& offset, float scale);
     void rebuildMap();
     
     int lodForScale(float scale);
     void onLodChanged();
+    
     
 private:
     int m_lod;
@@ -53,4 +61,10 @@ private:
     float m_scale;
     float m_adjustedScale;
     cocos2d::Mat4 m_transform;
+    
+    bool m_enableBounds;
+    Coordinate m_boundA;
+    Coordinate m_boundB;
+    float m_minScale;
+    float m_maxScale;
 };

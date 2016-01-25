@@ -61,10 +61,16 @@ bool MapViewLayer::init()
     
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
+    
     m_layer = MapLayer::create();
     m_layer->setAnchorPoint({0, 0});
     m_layer->setViewSize(visibleSize);
+    
+    auto boundA = m_loader->getMapRect().origin;
+    auto boundB = boundA + m_loader->getMapRect().size;
+    m_layer->setBounds(boundA, boundB, 0.04, 1.7);
+    m_layer->setBoundsEnabled(true);
+    
     this->addChild(m_layer);
     
     return true;
@@ -83,8 +89,7 @@ void MapViewLayer::onPanEnded()
 
 void MapViewLayer::onPinch(const cocos2d::Vec2& delta, float scale, const cocos2d::Vec2& scalePivot)
 {
-    m_layer->adjustScale(scale, scalePivot);
-    m_layer->adjustPosition(delta);
+    m_layer->adjustScaleAndPosition(scale, scalePivot, delta);
 }
 
 void MapViewLayer::onPinchEnded()

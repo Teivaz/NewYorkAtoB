@@ -59,8 +59,9 @@ bool MapLoader::LoadMapConfig(const std::string& mapConfigPath)
         int y1 = bounds[1].GetInt();
         int x2 = bounds[2].GetInt();
         int y2 = bounds[3].GetInt();
-        m_mapWidth = x2 - x1;
-        m_mapHeight = y2 - y1;
+        float mapWidth = x2 - x1;
+        float mapHeight = y2 - y1;
+        m_mapRect = CoordinateRegion(x1, y1, mapWidth, mapHeight);
     }
     
     m_tileLods.resize(m_maxLod);
