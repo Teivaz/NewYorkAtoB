@@ -10,6 +10,7 @@
 
 USING_NS_CC;
 
+const float TouchController::s_thresholdSq = 4.0f;
 
 TouchController::~TouchController()
 {
@@ -61,8 +62,8 @@ void TouchController::onTouchesBegan(const std::vector<Touch*>& touches, Event *
         // first touch
         if(touches.size() == 1)
         {
-            // one touch. Start drag
-            beginDrag(touches[0]);
+            // one touch. Start tap
+            beginTap(touches[0]);
         }
         else
         {
@@ -73,7 +74,14 @@ void TouchController::onTouchesBegan(const std::vector<Touch*>& touches, Event *
     else if(touchCount == 1)
     {
         // When we have second touch we finish drag and start pinch
-        endDrag();
+        if(m_state == TouchControllerState::Tap)
+        {
+            cancelTap();
+        }
+        else if(m_state == TouchControllerState::Drag)
+        {
+            endDrag();
+        }
         Touch* firstTouch = (Touch*)(*m_usedTouches->begin());
         beginPinch(firstTouch, touches[0]);
     }
@@ -102,7 +110,16 @@ void TouchController::onTouchesMoved(const std::vector<Touch*>& touches, Event *
         return;
     }
     
-    if(m_state == TouchControllerState::Drag)
+    if(m_state == TouchControllerState::Tap)
+    {
+        if (shouldCancellTap())
+        {
+            Touch* touch = (Touch*)(*m_usedTouches->begin());
+            cancelTap();
+            beginDrag(touch);
+        }
+    }
+    else if(m_state == TouchControllerState::Drag)
     {
         onDragMoved();
     }
@@ -115,6 +132,13 @@ void TouchController::onTouchesMoved(const std::vector<Touch*>& touches, Event *
 void TouchController::onTouchesEnded(const std::vector<Touch*>& touches, Event *unused_event)
 {
     int oldUsedTouchesNum = m_usedTouches->count();
+    if(oldUsedTouchesNum == 0)
+    {
+        return;
+    }
+    
+    Touch* tap = (Touch*)(*m_usedTouches->begin());
+    
     for(auto touch : touches)
     {
         m_usedTouches->removeObject(touch);
@@ -126,7 +150,11 @@ void TouchController::onTouchesEnded(const std::vector<Touch*>& touches, Event *
         return;
     }
     
-    if(m_state == TouchControllerState::Drag)
+    if(m_state == TouchControllerState::Tap)
+    {
+        endTap(tap);
+    }
+    else if(m_state == TouchControllerState::Drag)
     {
         endDrag();
     }
@@ -145,6 +173,32 @@ void TouchController::onTouchesEnded(const std::vector<Touch*>& touches, Event *
 void TouchController::onTouchesCancelled(const std::vector<Touch*>&touches, Event *unused_event)
 {
     onTouchesEnded(touches, unused_event);
+}
+
+void TouchController::beginTap(cocos2d::Touch* touch)
+{
+    m_state = TouchControllerState::Tap;
+    startUsingTouch(touch);
+}
+
+void TouchController::endTap(Touch* t)
+{
+    m_state = TouchControllerState::None;
+    if(onTap)
+    {
+        onTap(t->getLocation());
+    }
+}
+
+void TouchController::cancelTap()
+{
+    m_state = TouchControllerState::None;
+}
+
+bool TouchController::shouldCancellTap()
+{
+    Touch* touch = (Touch*)(*m_usedTouches->begin());
+    return (touch->getStartLocation() - touch->getLocation()).lengthSquared() > s_thresholdSq;
 }
 
 void TouchController::beginDrag(Touch* touch)

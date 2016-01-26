@@ -26,6 +26,7 @@ public:
     void onPanEnded();
     void onPinch(const cocos2d::Vec2& delta, float scale, const cocos2d::Vec2& scalePivot);
     void onPinchEnded();
+    void onTap(const cocos2d::Vec2& position);
     
 private:
     MapLoader* m_loader;

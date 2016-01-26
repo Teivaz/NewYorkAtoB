@@ -54,6 +54,7 @@ bool MapViewLayer::init()
     touchController->onDragEnd = [this](){this->onPanEnded();};
     touchController->onPinch = [this](const cocos2d::Vec2& delta, float scale, const cocos2d::Vec2& scalePivot){this->onPinch(delta, scale, scalePivot);};
     touchController->onDrag = [this](const cocos2d::Vec2& delta){this->onPan(delta);};
+    touchController->onTap = [this](const Vec2& position){this->onTap(position);};
     
     m_loader = new MapLoader();
     m_loader->LoadMapConfig("map/map.json");
@@ -95,4 +96,9 @@ void MapViewLayer::onPinch(const cocos2d::Vec2& delta, float scale, const cocos2
 void MapViewLayer::onPinchEnded()
 {
     m_layer->applyAdjust();
+}
+
+void MapViewLayer::onTap(const Vec2& position)
+{
+    
 }

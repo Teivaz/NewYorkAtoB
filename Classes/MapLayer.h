@@ -44,7 +44,7 @@ public:
     
 private:
     void calculateTransformation();
-    void applyBounds(const cocos2d::Vec3& offset, float scale);
+    void applyBounds(cocos2d::Vec3 offset, float scale);
     void rebuildMap();
     
     int lodForScale(float scale);

@@ -71,27 +71,34 @@ void MapLayer::calculateTransformation()
     m_transform.scale(m_scale);
 }
 
-void MapLayer::applyBounds(const Vec3& offset, float scale)
+void MapLayer::applyBounds(Vec3 offset, float scale)
 {
-    bool bound = false;
-    
+    bool scaleBound = false;
     if(scale < m_minScale)
     {
         // m_minScale == m_adjustedScale * m_scale
         m_adjustedScale = m_minScale / m_scale;
-        bound = true;
+        scaleBound = true;
     }
     else if(scale > m_maxScale)
     {
         m_adjustedScale = m_maxScale / m_scale;
-        bound = true;
+        scaleBound = true;
+    }
+    if(scaleBound)
+    {
+        Vec3 vecScale;
+        calculateTransformation();
+        m_transform.decompose(&vecScale, nullptr, &offset);
+        scale = vecScale.x;
     }
     
     Vec2 center((-offset.x + getContentSize().width / 2) / scale,
                 (-offset.y + getContentSize().height / 2) / scale);
     
     Vec3 delta;
-    
+    bool bound = false;
+
     if(center.x < m_boundA.x)
     {
         delta.x = m_boundA.x - center.x;
@@ -118,7 +125,8 @@ void MapLayer::applyBounds(const Vec3& offset, float scale)
         return;
     }
     
-    Vec3 newOffset = offset - delta*scale;
+    delta *= scale;
+    Vec3 newOffset = offset - delta;
     Mat4 m;
     m.translate({m_adjustedScalePivot, 0});
     m.scale(m_adjustedScale);

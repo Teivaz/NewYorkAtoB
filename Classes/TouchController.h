@@ -11,6 +11,7 @@
 enum class TouchControllerState
 {
     None,
+    Tap,
     Drag,
     Pinch
 };
@@ -30,15 +31,21 @@ public:
     virtual void onTouchesCancelled(const std::vector<cocos2d::Touch*>&touches, cocos2d::Event *unused_event) override;
     
     typedef std::function<void(const cocos2d::Vec2&, float, const cocos2d::Vec2&)> PinchCallback;
-    typedef std::function<void(const cocos2d::Vec2&)> DragCallback;
+    typedef std::function<void(const cocos2d::Vec2&)> PointCallback;
     typedef std::function<void()> VoidCallback;
     
     PinchCallback onPinch;
     VoidCallback onPinchEnd;
-    DragCallback onDrag;
+    PointCallback onDrag;
     VoidCallback onDragEnd;
+    PointCallback onTap;
     
 private:
+    void beginTap(cocos2d::Touch* touch);
+    void endTap(cocos2d::Touch* touch);
+    void cancelTap();
+    bool shouldCancellTap();
+    
     void beginDrag(cocos2d::Touch* touch);
     void onDragMoved();
     void endDrag();
@@ -53,4 +60,6 @@ private:
     TouchControllerState m_state;
     int m_touchCount;
     cocos2d::__Set* m_usedTouches;
+    
+    static const float s_thresholdSq;
 };
