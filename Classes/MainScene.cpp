@@ -1,5 +1,6 @@
 #include "MainScene.h"
 #include "MapLoader.h"
+#include "PointsLoader.h"
 
 #include "MapLayer.h"
 
@@ -10,16 +11,21 @@ USING_NS_CC;
 MapContext MapViewLayer::Context;
 
 MapViewLayer::MapViewLayer()
-: m_loader(nullptr)
+: m_mapLoader(nullptr)
 {
     
 }
 
 MapViewLayer::~MapViewLayer(){
-    if(Context.Loader == m_loader){
+    if(Context.Loader == m_mapLoader){
         Context.Loader = nullptr; // remove pointer to my loader
     }
-    delete m_loader;
+    if(Context.PointsLoader == m_pointsLoader)
+    {
+        Context.PointsLoader = nullptr;
+    }
+    delete m_mapLoader;
+    delete m_pointsLoader;
 }
 
 Scene* MapViewLayer::createScene()
@@ -56,9 +62,13 @@ bool MapViewLayer::init()
     touchController->onDrag = [this](const cocos2d::Vec2& delta){this->onPan(delta);};
     touchController->onTap = [this](const Vec2& position){this->onTap(position);};
     
-    m_loader = new MapLoader();
-    m_loader->LoadMapConfig("map/map.json");
-    Context.Loader = m_loader; // Set this loader as current
+    m_mapLoader = new MapLoader();
+    m_mapLoader->loadMapConfig("map/map.json");
+    Context.Loader = m_mapLoader; // Set this loader as current
+    
+    m_pointsLoader = new PointsLoader();
+    m_pointsLoader->loadPointsConfig("map/map_points.json");
+    Context.PointsLoader = m_pointsLoader;
     
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -67,8 +77,8 @@ bool MapViewLayer::init()
     m_layer->setAnchorPoint({0, 0});
     m_layer->setViewSize(visibleSize);
     
-    auto boundA = m_loader->getMapRect().origin;
-    auto boundB = boundA + m_loader->getMapRect().size;
+    auto boundA = m_mapLoader->getMapRect().origin;
+    auto boundB = boundA + m_mapLoader->getMapRect().size;
     m_layer->setBounds(boundA, boundB, 0.04, 1.7);
     m_layer->setBoundsEnabled(true);
     

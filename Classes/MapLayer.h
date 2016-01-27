@@ -1,5 +1,5 @@
 //
-//  MapLodLevel.hpp
+//  MapLodLevel.h
 //  NewYorkAtoB
 //
 //  Created by teivaz on 1/19/16.

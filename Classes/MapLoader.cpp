@@ -21,7 +21,7 @@ MapLoader::MapLoader()
 {
 }
 
-bool MapLoader::LoadMapConfig(const std::string& mapConfigPath)
+bool MapLoader::loadMapConfig(const std::string& mapConfigPath)
 {
     std::string configString = cocos2d::FileUtils::getInstance()->getStringFromFile(mapConfigPath);
     rapidjson::Document jsonDocument;

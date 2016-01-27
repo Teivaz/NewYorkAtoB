@@ -1301,5 +1301,17 @@ std::string FileUtils::getFileExtension(const std::string& filePath) const
     return fileExtension;
 }
 
+std::string FileUtils::getFileDir(const std::string& filePath) const
+{
+    std::string fileDir;
+    size_t pos = filePath.find_last_of('/');
+    if (pos != std::string::npos)
+    {
+        fileDir = filePath.substr(0, pos);
+    }
+    
+    return fileDir;
+}
+
 NS_CC_END
 

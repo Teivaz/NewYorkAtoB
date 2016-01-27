@@ -1,5 +1,7 @@
 #include "AppDelegate.h"
 #include "MainScene.h"
+#include "MapContext.h"
+#include "PointsLoader.h"
 
 USING_NS_CC;
 
@@ -86,7 +88,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
 // This function will be called when the app is inactive. When comes a phone call,it's be invoked too
 void AppDelegate::applicationDidEnterBackground() {
     Director::getInstance()->stopAnimation();
-
+    
+    if(MapViewLayer::Context.PointsLoader)
+        MapViewLayer::Context.PointsLoader->saveUserPoints();
     // if you use SimpleAudioEngine, it must be pause
     // SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
 }

@@ -14,13 +14,13 @@
 class MapTile;
 
 
-// MapLoader parses map config and stores
+// MapLoader parses map config and stores information about tiles and map
 class MapLoader{
 public:
     typedef std::pair<int, int> TileIndex;
     MapLoader();
     
-    bool LoadMapConfig(const std::string& mapConfigPath);
+    bool loadMapConfig(const std::string& mapConfigPath);
     
     const MapTileInfo& getBlankTile() const {return m_defaultTile;}
     const MapTileInfo& getMapTileInfo(const TileIndex& index, int lod);

@@ -47,7 +47,6 @@ def TileImage(image, mapCoordinates, lod, config):
 				imageSize[1]-regionSize[3], 
 				regionSize[2], 
 				imageSize[1]-regionSize[1])
-			print(subimageRegion)
 			subimage = image.crop(subimageRegion)
 			regionIndexX = regionSize[0]+mapOffsetX
 			regionIndexY = regionSize[1]+mapOffsetY

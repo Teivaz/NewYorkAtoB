@@ -25,6 +25,10 @@
 		0BA392381C50E91500210CA3 /* blank.png in Resources */ = {isa = PBXBuildFile; fileRef = 0BA392361C50E91500210CA3 /* blank.png */; };
 		0BA392861C54DA6A00210CA3 /* TouchController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BA392841C54DA6A00210CA3 /* TouchController.cpp */; };
 		0BA392871C54DA6A00210CA3 /* TouchController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BA392841C54DA6A00210CA3 /* TouchController.cpp */; };
+		0BA3928B1C5819F500210CA3 /* MapPointsLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BA392891C5819F500210CA3 /* MapPointsLayer.cpp */; };
+		0BA3928C1C5819F600210CA3 /* MapPointsLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BA392891C5819F500210CA3 /* MapPointsLayer.cpp */; };
+		0BA3928F1C581D3400210CA3 /* PointsLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BA3928D1C581D3400210CA3 /* PointsLoader.cpp */; };
+		0BA392901C581D3400210CA3 /* PointsLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BA3928D1C581D3400210CA3 /* PointsLoader.cpp */; };
 		1AC6FB21180E996B004C840B /* libcocos2d Mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC6FAF9180E9839004C840B /* libcocos2d Mac.a */; };
 		1AC6FB30180E99EB004C840B /* libcocos2d iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC6FB07180E9839004C840B /* libcocos2d iOS.a */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -127,6 +131,11 @@
 		0BA392361C50E91500210CA3 /* blank.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blank.png; sourceTree = "<group>"; };
 		0BA392841C54DA6A00210CA3 /* TouchController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TouchController.cpp; sourceTree = "<group>"; };
 		0BA392851C54DA6A00210CA3 /* TouchController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchController.h; sourceTree = "<group>"; };
+		0BA392891C5819F500210CA3 /* MapPointsLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapPointsLayer.cpp; sourceTree = "<group>"; };
+		0BA3928A1C5819F500210CA3 /* MapPointsLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapPointsLayer.h; sourceTree = "<group>"; };
+		0BA3928D1C581D3400210CA3 /* PointsLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PointsLoader.cpp; sourceTree = "<group>"; };
+		0BA3928E1C581D3400210CA3 /* PointsLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointsLoader.h; sourceTree = "<group>"; };
+		0BA392911C581DD300210CA3 /* MapPoint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapPoint.h; sourceTree = "<group>"; };
 		1AC6FAE5180E9839004C840B /* cocos2d_libs.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = cocos2d_libs.xcodeproj; path = ../cocos2d/build/cocos2d_libs.xcodeproj; sourceTree = "<group>"; };
 		1ACB3243164770DE00914215 /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../../cocos2dx/platform/third_party/ios/libraries/libcurl.a; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -319,8 +328,6 @@
 				0BA392201C4C3CD500210CA3 /* MapTile.h */,
 				0BA392241C4EB11E00210CA3 /* MapLayer.cpp */,
 				0BA392251C4EB11E00210CA3 /* MapLayer.h */,
-				0BA392281C4EC2C500210CA3 /* MapLoader.cpp */,
-				0BA392291C4EC2C500210CA3 /* MapLoader.h */,
 				0BA3922C1C4EE4C500210CA3 /* MapContext.h */,
 				0BA3922D1C502E6A00210CA3 /* MapTileInfo.cpp */,
 				0BA3922E1C502E6A00210CA3 /* MapTileInfo.h */,
@@ -329,6 +336,13 @@
 				0BA392331C50C5AA00210CA3 /* MapTileLayer.h */,
 				0BA392841C54DA6A00210CA3 /* TouchController.cpp */,
 				0BA392851C54DA6A00210CA3 /* TouchController.h */,
+				0BA392891C5819F500210CA3 /* MapPointsLayer.cpp */,
+				0BA3928A1C5819F500210CA3 /* MapPointsLayer.h */,
+				0BA392281C4EC2C500210CA3 /* MapLoader.cpp */,
+				0BA392291C4EC2C500210CA3 /* MapLoader.h */,
+				0BA3928D1C581D3400210CA3 /* PointsLoader.cpp */,
+				0BA3928E1C581D3400210CA3 /* PointsLoader.h */,
+				0BA392911C581DD300210CA3 /* MapPoint.h */,
 			);
 			name = Classes;
 			path = ../Classes;
@@ -532,6 +546,8 @@
 				0BA392261C4EB11E00210CA3 /* MapLayer.cpp in Sources */,
 				0BA392861C54DA6A00210CA3 /* TouchController.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
+				0BA3928B1C5819F500210CA3 /* MapPointsLayer.cpp in Sources */,
+				0BA3928F1C581D3400210CA3 /* PointsLoader.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -542,8 +558,10 @@
 				0BA392271C4EB11E00210CA3 /* MapLayer.cpp in Sources */,
 				0BA392871C54DA6A00210CA3 /* TouchController.cpp in Sources */,
 				0BA3922B1C4EC2C500210CA3 /* MapLoader.cpp in Sources */,
+				0BA3928C1C5819F600210CA3 /* MapPointsLayer.cpp in Sources */,
 				0BA392351C50C5AA00210CA3 /* MapTileLayer.cpp in Sources */,
 				0BA392221C4C3CD500210CA3 /* MapTile.cpp in Sources */,
+				0BA392901C581D3400210CA3 /* PointsLoader.cpp in Sources */,
 				0BA392301C502E6A00210CA3 /* MapTileInfo.cpp in Sources */,
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,

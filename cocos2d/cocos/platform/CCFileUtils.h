@@ -403,6 +403,7 @@ public:
     */
     virtual std::string getFileExtension(const std::string& filePath) const;
 
+    virtual std::string getFileDir(const std::string& filePath) const;
     /**
      *  Checks whether the path is an absolute path.
      *

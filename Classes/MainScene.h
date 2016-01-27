@@ -5,6 +5,7 @@
 
 class MapLoader;
 class MapLayer;
+class PointsLoader;
 
 class MapViewLayer : public cocos2d::Layer
 {
@@ -29,7 +30,8 @@ public:
     void onTap(const cocos2d::Vec2& position);
     
 private:
-    MapLoader* m_loader;
+    MapLoader* m_mapLoader;
+    PointsLoader* m_pointsLoader;
     
     MapLayer* m_layer;
 };

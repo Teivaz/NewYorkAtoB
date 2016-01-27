@@ -14,6 +14,7 @@
 class MapContext{
 public:
     class MapLoader* Loader;
+    class PointsLoader* PointsLoader;
     
-    MapContext():Loader(nullptr){}
+    MapContext(): Loader(nullptr), PointsLoader(nullptr){}
 };
