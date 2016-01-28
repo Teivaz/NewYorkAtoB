@@ -11,14 +11,20 @@
 
 class PointsLoader
 {
-    typedef std::list<MapPoint> MapPointList;
 public:
+    typedef std::list<MapPoint> MapPointList;
+
     PointsLoader();
     bool loadPointsConfig(const std::string& mapPointsConfigPath);
     
     void addPoint(const MapPoint& point);
     
     void saveUserPoints();
+    
+    // For now it is linear search and takes O(n) time
+    // TODO: implement faster search with cover tree if need a lot of points
+    MapPoint* findNearestPointWithinRadius(const Coordinate& point, float radius);
+    void findAllPointsInRadius(const Coordinate& point, float radius, std::list<MapPoint*>& outList);
     
 private:
     void loadMapPoints(const std::string& configPath);

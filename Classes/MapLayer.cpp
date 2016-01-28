@@ -13,7 +13,7 @@
 
 USING_NS_CC;
 
-#define ENABLE_EDIT_MODE 1
+#define ENABLE_EDIT_MODE 0
 
 bool MapLayer::init(){
     m_lod = 0;

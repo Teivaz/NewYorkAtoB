@@ -11,6 +11,8 @@
 #include "cocos2d.h"
 #include "Coordinates.h"
 
+class MapPoint;
+
 class MapPointsLayer : public cocos2d::Node
 {
 public:
@@ -29,6 +31,7 @@ public:
     
 private:
     void tryOpenPoint(const cocos2d::Vec2& point);
+    void openPoint(const MapPoint& point);
     void closeActivePoint();
     void createUserPoint(const cocos2d::Vec2& point);
     void saveActivePointAsUserPoint();

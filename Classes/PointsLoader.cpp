@@ -186,3 +186,62 @@ void PointsLoader::insertUserPoint(const MapPoint& p)
 {
     m_userPoints.push_back(p);
 }
+
+MapPoint* PointsLoader::findNearestPointWithinRadius(const Coordinate& point, float radius)
+{
+    radius *= radius;// square radius for futher usage
+    
+    MapPoint* result = nullptr;
+    if(m_mapPoints.empty() && m_userPoints.empty())
+    {
+        return nullptr;
+    }
+    
+    for(auto& i : m_mapPoints)
+    {
+        float distanceSq = point.distanceSquared(i.point);
+        if(distanceSq <= radius)
+        {
+            result = &i;
+            radius = distanceSq;
+        }
+    }
+    for(auto& i : m_userPoints)
+    {
+        float distanceSq = point.distanceSquared(i.point);
+        if(distanceSq <= radius)
+        {
+            result = &i;
+            radius = distanceSq;
+        }
+    }
+    return result;
+}
+
+
+void PointsLoader::findAllPointsInRadius(const Coordinate& point, float radius, std::list<MapPoint*>& outList)
+{
+    radius *= radius;// square radius for futher usage
+    if(m_mapPoints.empty() && m_userPoints.empty())
+    {
+        return;
+    }
+    
+    for(auto& i : m_mapPoints)
+    {
+        float distanceSq = point.distanceSquared(i.point);
+        if(distanceSq <= radius)
+        {
+            outList.push_back(&i);
+        }
+    }
+       
+    for(auto& i : m_userPoints)
+    {
+        float distanceSq = point.distanceSquared(i.point);
+        if(distanceSq <= radius)
+        {
+            outList.push_back(&i);
+        }
+    }
+}
