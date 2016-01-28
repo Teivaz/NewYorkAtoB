@@ -19,5 +19,25 @@ public:
     bool init();
     CREATE_FUNC(MapPointsLayer);
     
-    void LoadPoints(const std::string& mapName);
+    // Load points from the map context
+    void LoadPoints();
+    
+    void onTap(const cocos2d::Vec2& point);
+    
+    void setEditModeEnabled(bool val);
+    void onParentScaleChanged(float scale);
+    
+private:
+    void tryOpenPoint(const cocos2d::Vec2& point);
+    void closeActivePoint();
+    void createUserPoint(const cocos2d::Vec2& point);
+    void saveActivePointAsUserPoint();
+    
+private:
+    bool m_editMode;
+    bool m_hasActivePoint;
+    
+    cocos2d::ui::Widget* m_widget;
+    
+    float m_parentScale;
 };

@@ -9,8 +9,11 @@
 #include "MapLayer.h"
 
 #include "MapTileLayer.h"
+#include "MapPointsLayer.h"
 
 USING_NS_CC;
+
+#define ENABLE_EDIT_MODE 1
 
 bool MapLayer::init(){
     m_lod = 0;
@@ -26,6 +29,12 @@ bool MapLayer::init(){
     m_minScale = 0;
     m_maxScale = 1;
     
+    m_pointsLayer = MapPointsLayer::create();
+    addChild(m_pointsLayer);
+    
+#if ENABLE_EDIT_MODE
+    m_pointsLayer->setEditModeEnabled(true);
+#endif
     return true;
 }
 
@@ -46,12 +55,6 @@ void MapLayer::applyAdjust()
     m_adjustedPosition = Vec2::ZERO;
     m_adjustedScale = 1;
     m_adjustedScalePivot = Vec2::ZERO;
-}
-
-// sets the center point of the map in coordinates
-void MapLayer::setMapFocus(const Coordinate& center)
-{
-    
 }
 
 void MapLayer::calculateTransformation()
@@ -242,4 +245,18 @@ void MapLayer::setBounds(const Coordinate& a, const Coordinate& b, float minScal
     m_boundB = b;
     m_minScale = minScale;
     m_maxScale = maxScale;
+}
+
+void MapLayer::onTap(const cocos2d::Vec2& point)
+{
+    m_pointsLayer->onTap(point);
+}
+
+void MapLayer::setScale(float scale)
+{
+    Node::setScale(scale);
+    if(m_pointsLayer)
+    {
+        m_pointsLayer->onParentScaleChanged(scale);
+    }
 }

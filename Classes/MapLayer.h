@@ -12,6 +12,7 @@
 #include "Coordinates.h"
 
 class MapTileLayer;
+class MapPointsLayer;
 
 // MapLayer is responsible for converting pixels to coordinates
 // and representing a tiled map
@@ -31,8 +32,6 @@ public:
     float getMapScale() const;
     void setMapScale(float s);
     
-    // sets the center point of the map in coordinates
-    void setMapFocus(const Coordinate& center);
     void adjustPosition(const cocos2d::Vec2& pos);
     void adjustScale(float s, const cocos2d::Vec2& pivot);
     void adjustScaleAndPosition(float s, const cocos2d::Vec2& pivot, const cocos2d::Vec2& position);
@@ -42,6 +41,9 @@ public:
     void setBoundsEnabled(bool val){m_enableBounds = val;}
     void setBounds(const Coordinate& a, const Coordinate& b, float minScale, float maxScale);
     
+    void onTap(const cocos2d::Vec2& point);
+    
+    void setScale(float scale) override;
 private:
     void calculateTransformation();
     void applyBounds(cocos2d::Vec3 offset, float scale);
@@ -55,6 +57,7 @@ private:
     int m_lod;
     float m_mapScale;
     MapTileLayer* m_tileLayer;
+    MapPointsLayer* m_pointsLayer;
     cocos2d::Vec2 m_position;
     cocos2d::Vec2 m_adjustedPosition;
     cocos2d::Vec2 m_adjustedScalePivot;

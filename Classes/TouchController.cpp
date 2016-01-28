@@ -14,6 +14,7 @@ const float TouchController::s_thresholdSq = 4.0f;
 
 TouchController::~TouchController()
 {
+    _eventDispatcher->removeEventListenersForTarget(this);
     delete m_usedTouches;
 }
 
@@ -39,7 +40,7 @@ bool TouchController::init()
     l->onTouchesEnded = [this](const std::vector<Touch*>& t, Event* e){this->onTouchesEnded(t, e);};
     l->onTouchesCancelled = [this](const std::vector<Touch*>& t, Event* e){this->onTouchesCancelled(t, e);};
     
-    _eventDispatcher->addEventListenerWithFixedPriority(l, -255);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(l, this);
     return true;
 }
 
