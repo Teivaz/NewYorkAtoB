@@ -19,6 +19,7 @@ static const std::string s_popupSprite("bubble.9.png");
 static const Color3B s_textColor(0, 0, 0);
 static const int s_textSize = 20;
 static const Size s_boxSize(130, 90);
+static const Size s_boxPadding(20, 15);
 
 static const float s_touchRadius = 30;
 
@@ -85,7 +86,7 @@ void MapPointsLayer::createUserPoint(const Vec2& p)
     
     {
         ui::EditBox* box = ui::EditBox::create(Size(160, 140), s_popupSprite);
-        box->setInputMode(ui::EditBox::InputMode::SINGLE_LINE);
+        //box->setInputMode(ui::EditBox::InputMode::SINGLE_LINE);
         box->setAnchorPoint({0.5, 0.5});
         box->setScale(1.0/m_parentScale);
         box->setFontColor(s_textColor);
@@ -126,6 +127,11 @@ void MapPointsLayer::openPoint(const MapPoint& point)
     button->setOpacity(190);
     button->setTitleColor(s_textColor);
     button->setTitleFontSize(s_textSize);
+    
+//    button->getTitleRenderer()->updateContent();
+    auto size = button->getTitleRenderer()->getContentSize();
+    button->setContentSize(size + s_boxPadding);
+    
     m_widget = button;
     addChild(button);
     m_hasActivePoint = true;
@@ -171,9 +177,15 @@ void MapPointsLayer::onTap(const Vec2 &point)
 void MapPointsLayer::onParentScaleChanged(float scale)
 {
     m_parentScale = scale;
+    
+    float scaleToSet = 1.0/m_parentScale;
     if(m_hasActivePoint)
     {
-        m_widget->setScale(1.0/m_parentScale);
+        m_widget->setScale(scaleToSet);
+    }
+    for(const auto c : m_points->getChildren())
+    {
+        c->setScale(scaleToSet);
     }
 }
 
@@ -184,6 +196,11 @@ void MapPointsLayer::onViewChanged(const Coordinate& a, const Coordinate& b)
         // don't draw points
         return;
     }
+    
+    // TODO: update point on demand every half a second or so
+    // will not significantly affect UX but will improve performance
+    // Don't forget to resize all children of m_points
+    
     Coordinate center = (a + b)/2;
     float radius = center.distance(a);
     std::list<MapPoint*> list;

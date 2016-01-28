@@ -24,8 +24,6 @@ bool MapLayer::init(){
     m_scale = 1;
     
     m_enableBounds = false;
-    m_boundA;
-    m_boundB;
     m_minScale = 0;
     m_maxScale = 1;
     

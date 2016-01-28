@@ -79,7 +79,7 @@ bool MapViewLayer::init()
     
     auto boundA = m_mapLoader->getMapRect().origin;
     auto boundB = boundA + m_mapLoader->getMapRect().size;
-    m_layer->setBounds(boundA, boundB, 0.04, 1.7);
+    m_layer->setBounds(boundA, boundB, 0.088, 1.7);
     m_layer->setBoundsEnabled(true);
     this->addChild(m_layer);
     
