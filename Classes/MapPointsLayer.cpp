@@ -27,15 +27,24 @@ MapPointsLayer::MapPointsLayer()
 , m_hasActivePoint(false)
 , m_widget(nullptr)
 , m_parentScale(1.0)
+, m_pointIcon(nullptr)
+, m_points(nullptr)
 {
     
 }
 
 MapPointsLayer::~MapPointsLayer()
-{}
+{
+    CC_SAFE_RELEASE_NULL(m_pointIcon);
+}
 
 bool MapPointsLayer::init()
 {
+    Sprite* s = Sprite::create("point.png");
+    m_pointIcon = s->getSpriteFrame();
+    m_pointIcon->retain();
+    m_points = Node::create();
+    addChild(m_points);
     return true;
 }
 
@@ -101,6 +110,7 @@ void MapPointsLayer::closeActivePoint()
     removeChild(m_widget);
     m_widget = nullptr;
     m_hasActivePoint = false;
+    m_points->setVisible(true);
 }
 
 void MapPointsLayer::openPoint(const MapPoint& point)
@@ -119,6 +129,7 @@ void MapPointsLayer::openPoint(const MapPoint& point)
     m_widget = button;
     addChild(button);
     m_hasActivePoint = true;
+    m_points->setVisible(false);
 }
 
 void MapPointsLayer::tryOpenPoint(const Vec2& _position)
@@ -163,5 +174,29 @@ void MapPointsLayer::onParentScaleChanged(float scale)
     if(m_hasActivePoint)
     {
         m_widget->setScale(1.0/m_parentScale);
+    }
+}
+
+void MapPointsLayer::onViewChanged(const Coordinate& a, const Coordinate& b)
+{
+    if(m_hasActivePoint)
+    {
+        // don't draw points
+        return;
+    }
+    Coordinate center = (a + b)/2;
+    float radius = center.distance(a);
+    std::list<MapPoint*> list;
+    MapViewLayer::Context.PointsLoader->findAllPointsInRadius(center, radius, list);
+    
+    m_points->removeAllChildren();
+    for(auto p : list)
+    {
+        Sprite* s = Sprite::createWithSpriteFrame(m_pointIcon);
+        s->setAnchorPoint({0.5, 0.5});
+        s->setPosition(p->point);
+        s->setScale(1.0/m_parentScale);
+        s->setColor(Color3B::RED);
+        m_points->addChild(s);
     }
 }

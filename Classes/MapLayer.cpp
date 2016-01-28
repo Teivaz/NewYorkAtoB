@@ -205,6 +205,7 @@ void MapLayer::rebuildMap()
     }
     
     m_tileLayer->tileRegion({a.x, a.y}, {b.x, b.y}, m_lod);
+    m_pointsLayer->onViewChanged({a.x, a.y}, {b.x, b.y});
 }
 
 int MapLayer::lodForScale(float scale)

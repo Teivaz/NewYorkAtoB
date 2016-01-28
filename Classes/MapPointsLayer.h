@@ -28,6 +28,7 @@ public:
     
     void setEditModeEnabled(bool val);
     void onParentScaleChanged(float scale);
+    void onViewChanged(const Coordinate& a, const Coordinate& b);
     
 private:
     void tryOpenPoint(const cocos2d::Vec2& point);
@@ -43,4 +44,7 @@ private:
     cocos2d::ui::Widget* m_widget;
     
     float m_parentScale;
+    
+    cocos2d::SpriteFrame* m_pointIcon;
+    cocos2d::Node* m_points;
 };
