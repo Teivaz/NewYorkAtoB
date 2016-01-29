@@ -8,36 +8,39 @@
 
 #include "MapTile.h"
 
+USING_NS_CC;
+
 MapTile::MapTile()
 {
 }
 
-bool MapTile::init(const CoordinateRegion& region, cocos2d::Sprite* mapFragment)
+bool MapTile::init()
 {
-    addChild(mapFragment);
-    mapFragment->setAnchorPoint({0, 0});
-    mapFragment->setPosition({0, 0});//getContentSize().height});
-    return true;
+    return Node::init();
 }
 
-MapTile* MapTile::create(const CoordinateRegion& region, cocos2d::Sprite* mapFragment)
+//TODO: add caching
+MapTile* MapTile::getOrCreate(const MapTileInfo& tileInfo, const Coordinate& size)
 {
     MapTile* tile = new MapTile();
     tile->autorelease();
-    if(tile->init(region, mapFragment))
-        return tile;
-    return nullptr;
-}
-
-MapTile* MapTile::getOrCreate(const MapTileInfo& tileInfo, const Coordinate& size)
-{
-    auto sprite = cocos2d::Sprite::create(tileInfo.name);
-    //sprite->setScale(CC_CONTENT_SCALE_FACTOR());
-    //if(tileInfo.blank)
+    if(!tile->init())
     {
-        float spriteScale = sprite->getSpriteFrame()->getOriginalSizeInPixels().width / size.x;
-        sprite->setScale(CC_CONTENT_SCALE_FACTOR() / spriteScale);
+        return nullptr;
     }
     
-    return create(tileInfo.region, sprite);
+    tile->retain();
+    auto onReady = [=](Texture2D* texture){
+        Sprite* sprite = Sprite::createWithTexture(texture);
+        float spriteScale = sprite->getSpriteFrame()->getOriginalSizeInPixels().width / size.x;
+        sprite->setScale(CC_CONTENT_SCALE_FACTOR() / spriteScale);
+        
+        tile->addChild(sprite);
+        sprite->setAnchorPoint({0, 0});
+        sprite->setPosition({0, 0});
+        tile->release();
+    };
+    Director::getInstance()->getTextureCache()->addImageAsync(tileInfo.name, onReady);
+    
+    return tile;
 }

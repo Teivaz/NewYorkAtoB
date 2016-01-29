@@ -33,6 +33,7 @@ THE SOFTWARE.
 #include <thread>
 #include <condition_variable>
 #include <queue>
+#include <set>
 #include <string>
 #include <unordered_map>
 #include <functional>
@@ -214,7 +215,7 @@ protected:
     
     std::thread* _loadingThread;
 
-    std::deque<AsyncStruct*> _asyncStructQueue;
+    std::set<AsyncStruct*> _asyncStructSet;
     std::deque<AsyncStruct*> _requestQueue;
     std::deque<AsyncStruct*> _responseQueue;
 

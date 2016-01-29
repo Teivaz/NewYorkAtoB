@@ -13,8 +13,8 @@
 class MapTile : public cocos2d::Node{
 private:
     MapTile();
-    bool init(const CoordinateRegion& region, cocos2d::Sprite* mapFragment);
+    bool init();
 public:
-    static MapTile* create(const CoordinateRegion& region, cocos2d::Sprite* mapFragment);
+    static MapTile* create();
     static MapTile* getOrCreate(const MapTileInfo& tileInfo, const Coordinate& size);
 };

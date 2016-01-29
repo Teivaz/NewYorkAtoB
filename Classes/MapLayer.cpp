@@ -221,16 +221,8 @@ int MapLayer::lodForScale(float scale)
     v |= v >> 16;
     v++;
     
-    // Find previous POT
-    unsigned int l = v >> 1;
-
-    // Choose closest
-    if( (v - targetScale) < (targetScale - l) )
-    {
-        l = v;
-    }
-    if(l <= 0) return 0;
-    return log2f(l);
+   if(v <= 0) return 0;
+    return log2f(v);
 }
 
 void MapLayer::onLodChanged()

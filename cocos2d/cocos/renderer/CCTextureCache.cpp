@@ -116,7 +116,7 @@ public:
  - image data: new in Load thread, delete in GL thread(by Image instance)
  
  Note:
- - all AsyncStruct referenced in _asyncStructQueue, for unbind function use.
+ - all AsyncStruct referenced in _asyncStructSet, for unbind function use.
  
  How to deal add image many times?
  - At first, this situation is abnormal, we only ensure the logic is correct.
@@ -168,9 +168,9 @@ void TextureCache::addImageAsync(const std::string &path, const std::function<vo
     AsyncStruct *data = new (std::nothrow) AsyncStruct(fullpath, callback);
     
     // add async struct into queue
-    _asyncStructQueue.push_back(data);
+    _asyncStructSet.insert(data);
     _requestMutex.lock();
-    _requestQueue.push_back(data);
+    _requestQueue.push_front(data);
     _requestMutex.unlock();
 
     _sleepCondition.notify_one();
@@ -178,12 +178,12 @@ void TextureCache::addImageAsync(const std::string &path, const std::function<vo
 
 void TextureCache::unbindImageAsync(const std::string& filename)
 {
-    if (_asyncStructQueue.empty())
+    if (_asyncStructSet.empty())
     {
         return;
     }
     std::string fullpath = FileUtils::getInstance()->fullPathForFilename(filename);
-    for (auto it = _asyncStructQueue.begin(); it != _asyncStructQueue.end(); ++it)
+    for (auto it = _asyncStructSet.begin(); it != _asyncStructSet.end(); ++it)
     {
         if ((*it)->filename == fullpath)
         {
@@ -194,12 +194,12 @@ void TextureCache::unbindImageAsync(const std::string& filename)
 
 void TextureCache::unbindAllImageAsync()
 {
-    if (_asyncStructQueue.empty())
+    if (_asyncStructSet.empty())
     {
         return;
 
     }
-    for (auto it = _asyncStructQueue.begin(); it != _asyncStructQueue.end(); ++it)
+    for (auto it = _asyncStructSet.begin(); it != _asyncStructSet.end(); ++it)
     {
         (*it)->callback = nullptr;
     }
@@ -254,10 +254,7 @@ void TextureCache::addImageAsyncCallBack(float dt)
         {
             asyncStruct = _responseQueue.front();
             _responseQueue.pop_front();
-            
-            // the asyncStruct's sequence order in _asyncStructQueue must equal to the order in _responseQueue
-            CC_ASSERT(asyncStruct == _asyncStructQueue.front());
-            _asyncStructQueue.pop_front();
+            _asyncStructSet.erase(asyncStruct);
         }
         _responseMutex.unlock();
         
