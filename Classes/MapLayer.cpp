@@ -251,7 +251,12 @@ void MapLayer::onTap(const cocos2d::Vec2& point)
 
 void MapLayer::onLongTap(const cocos2d::Vec2& point)
 {
+    // Disabled adding new points
+#if 0
     m_pointsLayer->onLongTap(point);
+#else
+    m_pointsLayer->onTap(point);
+#endif
 }
 
 void MapLayer::setScale(float scale)
