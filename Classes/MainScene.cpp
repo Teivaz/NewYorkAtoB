@@ -13,7 +13,6 @@ MapContext MapViewLayer::Context;
 MapViewLayer::MapViewLayer()
 : m_mapLoader(nullptr)
 {
-    
 }
 
 MapViewLayer::~MapViewLayer(){
@@ -61,6 +60,7 @@ bool MapViewLayer::init()
     touchController->onPinch = [this](const cocos2d::Vec2& delta, float scale, const cocos2d::Vec2& scalePivot){this->onPinch(delta, scale, scalePivot);};
     touchController->onDrag = [this](const cocos2d::Vec2& delta){this->onPan(delta);};
     touchController->onTap = [this](const Vec2& position){this->onTap(position);};
+    touchController->onLongTap = [this](const Vec2& position){this->onLongTap(position);};
     
     m_mapLoader = new MapLoader();
     m_mapLoader->loadMapConfig("map/map.json");
@@ -83,9 +83,13 @@ bool MapViewLayer::init()
     m_layer->setBoundsEnabled(true);
     this->addChild(m_layer);
     
-
-    
-    
+    // Focus on the map center
+    {
+        Coordinate center(m_mapLoader->getMapRect().getMidX(),
+                          m_mapLoader->getMapRect().getMidY());
+        m_layer->setMapScale(0.15);
+        m_layer->setMapFocus(center);
+    }
     
     return true;
 }
@@ -114,4 +118,9 @@ void MapViewLayer::onPinchEnded()
 void MapViewLayer::onTap(const Vec2& position)
 {
     m_layer->onTap(position);
+}
+
+void MapViewLayer::onLongTap(const Vec2& position)
+{
+    m_layer->onLongTap(position);
 }

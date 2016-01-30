@@ -10,7 +10,11 @@
 
 USING_NS_CC;
 
+// Threshold of the touch 
 const float TouchController::s_thresholdSq = 4.0f;
+
+// Duration of long tap in ms
+const float TouchController::s_longTapDuration = 1000;
 
 TouchController::~TouchController()
 {
@@ -23,6 +27,8 @@ TouchController::TouchController()
 , onPinchEnd(nullptr)
 , onDrag(nullptr)
 , onDragEnd(nullptr)
+, onTap(nullptr)
+, onLongTap(nullptr)
 , m_state(TouchControllerState::None)
 , m_touchCount(0)
 , m_usedTouches(nullptr)
@@ -185,7 +191,11 @@ void TouchController::beginTap(cocos2d::Touch* touch)
 void TouchController::endTap(Touch* t)
 {
     m_state = TouchControllerState::None;
-    if(onTap)
+    if(onLongTap && (t->getTouchDuration() >= s_longTapDuration))
+    {
+        onLongTap(t->getLocation());
+    }
+    else if(onTap)
     {
         onTap(t->getLocation());
     }

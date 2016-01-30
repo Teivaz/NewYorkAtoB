@@ -18,27 +18,27 @@ class MapPointsLayer : public cocos2d::Node
 public:
     MapPointsLayer();
     ~MapPointsLayer();
-    bool init();
     CREATE_FUNC(MapPointsLayer);
     
-    // Load points from the map context
-    void LoadPoints();
-    
     void onTap(const cocos2d::Vec2& point);
+    void onLongTap(const cocos2d::Vec2& point);
     
-    void setEditModeEnabled(bool val);
     void onParentScaleChanged(float scale);
     void onViewChanged(const Coordinate& a, const Coordinate& b);
     
 private:
-    void tryOpenPoint(const cocos2d::Vec2& point);
+    bool init();
+    void createPoint(const cocos2d::Vec2& point);
+    void editPoint(MapPoint* p);
+    MapPoint* tryOpenPoint(const cocos2d::Vec2& point);
     void openPoint(const MapPoint& point);
     void closeActivePoint();
     void createUserPoint(const cocos2d::Vec2& point);
     void saveActivePointAsUserPoint();
+    void addPoint(MapPoint* point);
     
 private:
-    bool m_editMode;
+    bool m_newPoint;
     bool m_hasActivePoint;
     
     cocos2d::ui::Widget* m_widget;

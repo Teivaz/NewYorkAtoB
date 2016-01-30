@@ -11,6 +11,7 @@
 USING_NS_CC;
 
 MapTile::MapTile()
+: m_loaded(false)
 {
 }
 
@@ -20,7 +21,7 @@ bool MapTile::init()
 }
 
 //TODO: add caching
-MapTile* MapTile::getOrCreate(const MapTileInfo& tileInfo, const Coordinate& size)
+MapTile* MapTile::createAsync(const MapTileInfo& tileInfo, const Coordinate& size)
 {
     MapTile* tile = new MapTile();
     tile->autorelease();
@@ -38,9 +39,30 @@ MapTile* MapTile::getOrCreate(const MapTileInfo& tileInfo, const Coordinate& siz
         tile->addChild(sprite);
         sprite->setAnchorPoint({0, 0});
         sprite->setPosition({0, 0});
+        tile->m_loaded = true;
         tile->release();
     };
     Director::getInstance()->getTextureCache()->addImageAsync(tileInfo.name, onReady);
+    
+    return tile;
+}
+
+//TODO: add caching
+MapTile* MapTile::create(const MapTileInfo& tileInfo, const Coordinate& size)
+{
+    MapTile* tile = new MapTile();
+    tile->autorelease();
+    if(!tile->init())
+    {
+        return nullptr;
+    }
+    Sprite* sprite = Sprite::create(tileInfo.name);
+    float spriteScale = sprite->getSpriteFrame()->getOriginalSizeInPixels().width / size.x;
+    sprite->setScale(CC_CONTENT_SCALE_FACTOR() / spriteScale);
+    tile->addChild(sprite);
+    sprite->setAnchorPoint({0, 0});
+    sprite->setPosition({0, 0});
+    tile->m_loaded = true;
     
     return tile;
 }

@@ -39,6 +39,7 @@ public:
     PointCallback onDrag;
     VoidCallback onDragEnd;
     PointCallback onTap;
+    PointCallback onLongTap;
     
 private:
     void beginTap(cocos2d::Touch* touch);
@@ -56,10 +57,12 @@ private:
     
     bool isTouchUsed(cocos2d::Touch* touch);
     void startUsingTouch(cocos2d::Touch* touch);
+    
 private:
     TouchControllerState m_state;
     int m_touchCount;
     cocos2d::__Set* m_usedTouches;
     
     static const float s_thresholdSq;
+    static const float s_longTapDuration;
 };

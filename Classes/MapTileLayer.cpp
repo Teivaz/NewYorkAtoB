@@ -24,7 +24,6 @@ bool MapTileLayer::init()
 void MapTileLayer::tileRegion(const Coordinate& a, const Coordinate& b, int lod)
 {
     MapLoader* loader = MapViewLayer::Context.Loader;
-    Coordinate size = loader->getTileSize(lod);
     
     auto ai = loader->getTileIndex(a, lod);
     auto bi = loader->getTileIndex(b, lod);
@@ -38,29 +37,57 @@ void MapTileLayer::tileRegion(const Coordinate& a, const Coordinate& b, int lod)
     m_indexB = bi;
     m_lod = lod;
     
-    cocos2d::log("Map rebuild (%d,%d) (%d,%d)", ai.first, ai.second, bi.first, bi.second);
+    int tilesPending = _tileRegion(a, b, lod, true);
+    if(tilesPending > 0)
+    {
+        _tileRegion(a, b, lod+1, false);
+    }
+}
+
+int MapTileLayer::_tileRegion(const Coordinate& a, const Coordinate& b, int lod, bool async)
+{
+    MapLoader* loader = MapViewLayer::Context.Loader;
+    auto ai = loader->getTileIndex(a, lod);
+    auto bi = loader->getTileIndex(b, lod);
+    Coordinate size = loader->getTileSize(lod);
     
+    cocos2d::log("Map rebuild (%d,%d) (%d,%d)", ai.first, ai.second, bi.first, bi.second);
+    int tilesNotYetLoaded = 0;
     for(int i = ai.second; i <= bi.second; ++i) // y axis
     {
         for(int j = ai.first; j <= bi.first; ++j) // x axis
         {
             Coordinate position = Coordinate(j*size.x, i*size.y);
             const MapTileInfo& tileInfo = loader->getMapTileInfo({j, i}, lod);
-            addTile(tileInfo, position, size);
+            tilesNotYetLoaded += addTile(tileInfo, position, size, async);
         }
     }
+    return tilesNotYetLoaded;
 }
 
-void MapTileLayer::addTile(const MapTileInfo& info, const Coordinate& position, const Coordinate& size)
+bool MapTileLayer::addTile(const MapTileInfo& info, const Coordinate& position, const Coordinate& size, bool async)
 {
     if(!info.blank)
     {
         const MapTileInfo& blank = MapViewLayer::Context.Loader->getBlankTile();
-        MapTile* tile = MapTile::getOrCreate(blank, size);
+        MapTile* tile = MapTile::create(blank, size);
         tile->setPosition(position);
-        addChild(tile);
+        // push blank tiles all way to the back
+        addChild(tile, -100);
     }
-    MapTile* tile = MapTile::getOrCreate(info, size);
+    MapTile* tile = nullptr;
+    if(async)
+    {
+        tile = MapTile::createAsync(info, size);
+    }
+    else
+    {
+        tile = MapTile::create(info, size);
+    }
     tile->setPosition(position);
-    addChild(tile);
+    
+    // draw tiles with lower LOD first
+    addChild(tile, -info.lod);
+    
+    return !tile->isLoaded();
 }

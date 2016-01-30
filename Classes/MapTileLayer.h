@@ -18,12 +18,27 @@ class MapTileLayer : public cocos2d::Node
 {
 public:
     CREATE_FUNC(MapTileLayer);
-    bool init();
     
+    /** Fill region with tiles of nearest LOD
+     * tiles of the required LOD will be loaded asynchronously
+     * untill they fully loaded map will be tiled with greater LOD (loaded synchronously)
+     */
     void tileRegion(const Coordinate& a, const Coordinate& b, int lod);
     
 private:
-    void addTile(const MapTileInfo& info, const Coordinate& position, const Coordinate& size);
+    bool init();
+    
+    /** Fill rectangle from a to b with map tiles with nearest LOD to given lod
+     * if async is true then return result is number of tiles that are not yet loaded
+     */
+    int _tileRegion(const Coordinate& a, const Coordinate& b, int lod, bool async);
+    
+    /* Load tile to the given position
+     * returns true if tile is pending for async load
+     */
+    bool addTile(const MapTileInfo& info, const Coordinate& position, const Coordinate& size, bool async);
+    
+private:
     std::pair<int, int> m_indexA;
     std::pair<int, int> m_indexB;
     int m_lod;

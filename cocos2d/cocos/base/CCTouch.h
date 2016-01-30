@@ -102,19 +102,8 @@ public:
      * @param x A given x coordinate.
      * @param y A given y coordinate.
      */
-    void setTouchInfo(int id, float x, float y)
-    {
-        _id = id;
-        _prevPoint = _point;
-        _point.x   = x;
-        _point.y   = y;
-        if (!_startPointCaptured)
-        {
-            _startPoint = _point;
-            _startPointCaptured = true;
-            _prevPoint = _point;
-        }
-    }
+    void setTouchInfo(int id, float x, float y);
+    
     /** Get touch id.
      * @js getId
      * @lua getId
@@ -130,6 +119,11 @@ public:
      *
      */
     void resetTouch();
+    
+    /** Get time duration since touch started
+     * in milliseconds
+     */
+    long getTouchDuration() const;
 
 private:
     int _id;
@@ -137,6 +131,7 @@ private:
     Vec2 _startPoint;
     Vec2 _point;
     Vec2 _prevPoint;
+    long long _timeCaptured;
 };
 
 // end of base group

@@ -24,14 +24,13 @@ static const Size s_boxPadding(20, 15);
 static const float s_touchRadius = 30;
 
 MapPointsLayer::MapPointsLayer()
-: m_editMode(false)
+: m_newPoint(false)
 , m_hasActivePoint(false)
 , m_widget(nullptr)
 , m_parentScale(1.0)
 , m_pointIcon(nullptr)
 , m_points(nullptr)
 {
-    
 }
 
 MapPointsLayer::~MapPointsLayer()
@@ -47,19 +46,6 @@ bool MapPointsLayer::init()
     m_points = Node::create();
     addChild(m_points);
     return true;
-}
-
-void MapPointsLayer::LoadPoints()
-{
-}
-
-void MapPointsLayer::setEditModeEnabled(bool val)
-{
-    if(m_editMode != val)
-    {
-        closeActivePoint();
-        m_editMode = val;
-    }
 }
 
 void MapPointsLayer::saveActivePointAsUserPoint()
@@ -78,23 +64,22 @@ void MapPointsLayer::saveActivePointAsUserPoint()
     {
         MapViewLayer::Context.PointsLoader->addPoint(p);
     }
+    addPoint(&p);
 }
 
 void MapPointsLayer::createUserPoint(const Vec2& p)
 {
     Vec2 point = convertToNodeSpace(p);
     
-    {
-        ui::EditBox* box = ui::EditBox::create(Size(160, 140), s_popupSprite);
-        //box->setInputMode(ui::EditBox::InputMode::SINGLE_LINE);
-        box->setAnchorPoint({0.5, 0.5});
-        box->setScale(1.0/m_parentScale);
-        box->setFontColor(s_textColor);
-        box->setPosition(point);
-        box->setFontSize(s_textSize);
-        addChild(box);
-        m_widget = box;
-    }
+    ui::EditBox* box = ui::EditBox::create(Size(160, 140), s_popupSprite);
+    //box->setInputMode(ui::EditBox::InputMode::SINGLE_LINE);
+    box->setAnchorPoint({0.5, 0.5});
+    box->setScale(1.0/m_parentScale);
+    box->setFontColor(s_textColor);
+    box->setPosition(point);
+    box->setFontSize(s_textSize);
+    addChild(box);
+    m_widget = box;
 }
 
 void MapPointsLayer::closeActivePoint()
@@ -104,9 +89,10 @@ void MapPointsLayer::closeActivePoint()
         return;
     }
     
-    if(m_editMode)
+    if(m_newPoint)
     {
         saveActivePointAsUserPoint();
+        m_newPoint = false;
     }
     removeChild(m_widget);
     m_widget = nullptr;
@@ -127,8 +113,6 @@ void MapPointsLayer::openPoint(const MapPoint& point)
     button->setOpacity(190);
     button->setTitleColor(s_textColor);
     button->setTitleFontSize(s_textSize);
-    
-//    button->getTitleRenderer()->updateContent();
     auto size = button->getTitleRenderer()->getContentSize();
     button->setContentSize(size + s_boxPadding);
     
@@ -138,28 +122,32 @@ void MapPointsLayer::openPoint(const MapPoint& point)
     m_points->setVisible(false);
 }
 
-void MapPointsLayer::tryOpenPoint(const Vec2& _position)
+void MapPointsLayer::createPoint(const Vec2& _position)
 {
     if(m_hasActivePoint)
     {
         return;
     }
     
-    if(m_editMode)
+    createUserPoint(_position);
+    m_newPoint = true;
+    m_hasActivePoint = true;
+}
+
+MapPoint* MapPointsLayer::tryOpenPoint(const Vec2& _position)
+{
+    if(m_hasActivePoint)
     {
-        // in edit mode we create new user point
-        createUserPoint(_position);
-        m_hasActivePoint = true;
+        return nullptr;
     }
-    else
+    
+    Vec2 position = convertToNodeSpace(_position);
+    MapPoint* p = MapViewLayer::Context.PointsLoader->findNearestPointWithinRadius(position,s_touchRadius / m_parentScale);
+    if(p)
     {
-        Vec2 position = convertToNodeSpace(_position);
-        MapPoint* p = MapViewLayer::Context.PointsLoader->findNearestPointWithinRadius(position, s_touchRadius / m_parentScale);
-        if(p)
-        {
-            openPoint(*p);
-        }
+        openPoint(*p);
     }
+    return p;
 }
 
 void MapPointsLayer::onTap(const Vec2 &point)
@@ -172,6 +160,31 @@ void MapPointsLayer::onTap(const Vec2 &point)
     {
         tryOpenPoint(point);
     }
+}
+
+void MapPointsLayer::onLongTap(const Vec2 &point)
+{
+    if(m_hasActivePoint)
+    {
+        closeActivePoint();
+    }
+    else
+    {
+        MapPoint* p = tryOpenPoint(point);
+        if(m_hasActivePoint)
+        {
+            editPoint(p);
+        }
+        else
+        {
+            createPoint(point);
+        }
+    }
+}
+
+void MapPointsLayer::editPoint(MapPoint* p)
+{
+    ;
 }
 
 void MapPointsLayer::onParentScaleChanged(float scale)
@@ -209,11 +222,16 @@ void MapPointsLayer::onViewChanged(const Coordinate& a, const Coordinate& b)
     m_points->removeAllChildren();
     for(auto p : list)
     {
-        Sprite* s = Sprite::createWithSpriteFrame(m_pointIcon);
-        s->setAnchorPoint({0.5, 0.5});
-        s->setPosition(p->point);
-        s->setScale(1.0/m_parentScale);
-        s->setColor(Color3B::RED);
-        m_points->addChild(s);
+        addPoint(p);
     }
+}
+
+void MapPointsLayer::addPoint(MapPoint* point)
+{
+    Sprite* s = Sprite::createWithSpriteFrame(m_pointIcon);
+    s->setAnchorPoint({0.5, 0.5});
+    s->setPosition(point->point);
+    s->setScale(1.0/m_parentScale);
+    s->setColor(Color3B::RED);
+    m_points->addChild(s);
 }

@@ -15,6 +15,10 @@ private:
     MapTile();
     bool init();
 public:
-    static MapTile* create();
-    static MapTile* getOrCreate(const MapTileInfo& tileInfo, const Coordinate& size);
+    static MapTile* createAsync(const MapTileInfo& tileInfo, const Coordinate& size);
+    static MapTile* create(const MapTileInfo& tileInfo, const Coordinate& size);
+    
+    bool isLoaded() const {return m_loaded;}
+private:
+    bool m_loaded;
 };

@@ -13,26 +13,31 @@
 
 USING_NS_CC;
 
-#define ENABLE_EDIT_MODE 0
+MapLayer::MapLayer()
+: m_tileLayer(nullptr)
+, m_pointsLayer(nullptr)
+, m_position()
+, m_adjustedPosition()
+, m_adjustedScalePivot()
+, m_scale(1.0)
+, m_adjustedScale(1.0)
+, m_transform()
+, m_lod(0)
+, m_enableBounds(false)
+, m_boundA()
+, m_boundB()
+, m_minScale(0.0)
+, m_maxScale(1.0)
+{
+}
 
 bool MapLayer::init(){
-    m_lod = 0;
     m_tileLayer = MapTileLayer::create();
     addChild(m_tileLayer);
-    m_tileLayer->setPosition(Vec2::ZERO);
-    m_adjustedScale = 1;
-    m_scale = 1;
-    
-    m_enableBounds = false;
-    m_minScale = 0;
-    m_maxScale = 1;
     
     m_pointsLayer = MapPointsLayer::create();
     addChild(m_pointsLayer);
     
-#if ENABLE_EDIT_MODE
-    m_pointsLayer->setEditModeEnabled(true);
-#endif
     return true;
 }
 
@@ -40,7 +45,6 @@ bool MapLayer::init(){
 void MapLayer::setViewSize(const cocos2d::Size& size)
 {
     setContentSize(size);
-    rebuildMap();
 }
 
 void MapLayer::applyAdjust()
@@ -59,15 +63,15 @@ void MapLayer::calculateTransformation()
 {
     m_transform = Mat4::IDENTITY;
     
-    // adjust scale around pivot
+    // 3. adjust scale around pivot
     m_transform.translate({m_adjustedScalePivot, 0});
     m_transform.scale(m_adjustedScale);
     m_transform.translate({-m_adjustedScalePivot, 0});
     
-    // adjust position
+    // 2. adjust position
     m_transform.translate({m_adjustedPosition, 0});
     
-    // apply base position and scale
+    // 1. apply base position and scale
     m_transform.translate({m_position, 0});
     m_transform.scale(m_scale);
 }
@@ -77,7 +81,6 @@ void MapLayer::applyBounds(Vec3 offset, float scale)
     bool scaleBound = false;
     if(scale < m_minScale)
     {
-        // m_minScale == m_adjustedScale * m_scale
         m_adjustedScale = m_minScale / m_scale;
         scaleBound = true;
     }
@@ -168,6 +171,12 @@ void MapLayer::adjustPosition(const cocos2d::Vec2& pos)
     rebuildMap();
 }
 
+void MapLayer::setPosition(const cocos2d::Vec2& pos)
+{
+    m_position = pos;
+    Node::setPosition(pos);
+}
+
 void MapLayer::rebuildMap()
 {
     calculateTransformation();
@@ -182,12 +191,9 @@ void MapLayer::rebuildMap()
         applyBounds(offset, scale.x);
         m_transform.decompose(&scale, nullptr, &offset);
     }
-    //m_position.x = offset.x;
-    //m_position.y = offset.y;
-    //m_adjustedPosition = Vec2::ZERO;
     
     setScale(scale.x);
-    setPosition(Vec2(offset.x, offset.y));
+    Node::setPosition(Vec2(offset.x, offset.y));
     
     Vec3 a(0, 0, 0);
     Vec3 b(getContentSize(), 0);
@@ -206,13 +212,13 @@ void MapLayer::rebuildMap()
     m_pointsLayer->onViewChanged({a.x, a.y}, {b.x, b.y});
 }
 
-int MapLayer::lodForScale(float scale)
+int MapLayer::lodForScale(float scale) const
 {
     // Take into account device content scale factor
     float targetScale = 1 / (CC_CONTENT_SCALE_FACTOR() * scale);
     
     // Find next POT
-    unsigned int v = targetScale;
+    unsigned int v = roundf(targetScale);
     v--;
     v |= v >> 1;
     v |= v >> 2;
@@ -243,6 +249,11 @@ void MapLayer::onTap(const cocos2d::Vec2& point)
     m_pointsLayer->onTap(point);
 }
 
+void MapLayer::onLongTap(const cocos2d::Vec2& point)
+{
+    m_pointsLayer->onLongTap(point);
+}
+
 void MapLayer::setScale(float scale)
 {
     Node::setScale(scale);
@@ -250,4 +261,21 @@ void MapLayer::setScale(float scale)
     {
         m_pointsLayer->onParentScaleChanged(scale);
     }
+}
+
+void MapLayer::setMapFocus(const Coordinate& focus)
+{
+    m_position = Vec2(getContentSize() / 2) - focus * m_scale;
+    rebuildMap();
+}
+
+void MapLayer::setMapScale(float scale)
+{
+    m_scale = scale;
+    rebuildMap();
+}
+
+float MapLayer::getMapScale() const
+{
+    return getScale();
 }

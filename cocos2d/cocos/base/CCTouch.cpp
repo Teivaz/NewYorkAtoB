@@ -25,6 +25,7 @@
 
 #include "base/CCTouch.h"
 #include "base/CCDirector.h"
+#include "base/CCUtils.h"
 
 NS_CC_BEGIN
 
@@ -70,10 +71,35 @@ Vec2 Touch::getDelta() const
     return getLocation() - getPreviousLocation();
 }
 
+void Touch::setTouchInfo(int id, float x, float y)
+{
+    _id = id;
+    _prevPoint = _point;
+    _point.x   = x;
+    _point.y   = y;
+    if (!_startPointCaptured)
+    {
+        _startPoint = _point;
+        _startPointCaptured = true;
+        _prevPoint = _point;
+        _timeCaptured = utils::getTimeInMilliseconds();
+    }
+}
+
 void Touch::resetTouch()
 {
     _startPointCaptured = false;
     setTouchInfo(_id, _point.x, _point.y);
+}
+
+long Touch::getTouchDuration() const
+{
+    long result = 0;
+    if(_startPointCaptured)
+    {
+        result = static_cast<long>(utils::getTimeInMilliseconds() - _timeCaptured);
+    }
+    return result;
 }
 
 NS_CC_END
