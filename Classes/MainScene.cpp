@@ -66,6 +66,10 @@ bool MapViewLayer::init()
     m_mapLoader->loadMapConfig("map/map.json");
     Context.Loader = m_mapLoader; // Set this loader as current
     
+#if !COCOS2D_DEBUG
+    Director::getInstance()->setDisplayStats(false);
+#endif
+    
     m_pointsLoader = new PointsLoader();
     m_pointsLoader->loadPointsConfig("map/map_points.json");
     Context.PointsLoader = m_pointsLoader;
